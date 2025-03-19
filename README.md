@@ -9,5 +9,6 @@
 * Käyttäjä pystyy valitsemaan lahjalistalle yhden tai useamman luokittelun (esim. onko kyseessä syntymäpäivä- tai hääjuhla). Mahdolliset luokat ovat tietokannassa.
 * Sovelluksessa on pääasiallisen lahjaistan lisäksi toissijainen lista, joka ilmaisee, onko toinen käyttäjä ostamassa lahjaa. Käyttäjä pystyy siis ilmoittamaan ostavansa listalla toivotun lahjan.
 
-## Tämä vaihe:
+## Tämä vaihe
 * Käyttäjä pystyy luomaan tunnuksen ja kirjautumaan sisään sovellukseen.
+* Käyttäjä pystyy lisäämään sovellukseen lahjatoivelistoja.

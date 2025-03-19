@@ -1,0 +1,28 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+  <title>Uusi lahjalista</title>
+</head>
+
+<body>
+  <form action="/create_giftlist" method="post">
+    <p>
+      Lahjalista: <br />
+      <input type="text" name="name" />
+    </p>
+    <p>
+        Lahjalistan tyyppi:<br />
+        <textarea name="type" rows="5" cols="40"></textarea>
+    </p>
+    <p>
+      Listan salasana: <br />
+      <input type="password" name="password1" /> <br />
+      Listan salasana uudestaan: <br />
+      <input type="password" name="password2" />
+    </p>
+    <input type="submit" value="Luo lahjalista" />
+  </form>
+</body>
+
+</html>

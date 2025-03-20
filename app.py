@@ -2,6 +2,7 @@ import sqlite3
 from flask import Flask
 from flask import redirect, render_template, request, session
 from werkzeug.security import generate_password_hash, check_password_hash
+import giftlists
 import config
 import db
 
@@ -10,7 +11,13 @@ app.secret_key = config.secret_key
 
 @app.route("/")
 def index():
-    return render_template("index.html")
+    lists = giftlists.get_lists()
+    return render_template("index.html", lists = lists)
+
+@app.route("/giftlist/<int:list_id>")
+def page(list_id):
+    giftlist = giftlists.get_list(list_id)
+    return render_template("show_list.html", giftlist = giftlist)
 
 @app.route("/new_giftlist")
 def new_giftlist():
@@ -26,8 +33,7 @@ def create_giftlist():
     if password1 != password2:
         return "VIRHE: salasanat eivät ole samat"
     password_hash = generate_password_hash(password1)
-    sql = "INSERT INTO giftlists (title, type, user_id, password_hash) VALUES (?, ?, ?, ?)"
-    db.execute(sql, [name, giftlist_type, user_id, password_hash])
+    giftlists.add_list(name, giftlist_type, user_id, password_hash)
     return redirect("/")
 
 @app.route("/register")
@@ -56,6 +62,7 @@ def login():
     if request.method == "POST":
         username = request.form["username"]
         password = request.form["password"]
+        # TODO. Throws exception, if trying to log in with non-existent username
         sql = "SELECT id, password_hash FROM users WHERE username = ?"
         result = db.query(sql, [username])[0]
         user_id = result["id"]

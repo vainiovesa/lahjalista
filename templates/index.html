@@ -25,11 +25,15 @@
     <a href="/login">Kirjaudu sisään</a>
   </p>
   {% endif %}
-
   <p>
     <a href="new_giftlist">Uusi lahjalista</a>
   </p>
-
+  <h2>Lahjalistoja</h2>
+  <ul>
+    {% for list in lists %}
+    <li><a href="/giftlist/{{ list.id }}">{{ list.title }}</a></li>
+    {% endfor %}
+  </ul>
 </body>
 
 </html>

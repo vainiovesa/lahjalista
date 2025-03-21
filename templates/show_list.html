@@ -9,18 +9,22 @@
   <h1>{{ giftlist.title }}</h1>
   {% if session.user_id == giftlist.user_id %}
   <p>
-    <a href="/edit/{{ giftlist.id }}">Muokkaa</a>
+    <a href="/edit/{{ giftlist.id }}">Muokkaa</a> <br />
+    <a href="/delete/{{ giftlist.id }}">Poista</a>
+  </p>
+  <p>
+    Sinun lahjatoivelistasi.
   </p>
   {% else %}
+  <p>
+    Henkilön {{ giftlist.username }} lahjatoivelista.
+  </p>
   <p>
     Salasana
   </p>
   <p>
   {% endif %}
   <h2>{{ giftlist.type }}</h2>
-  <p>
-    Henkilön {{ giftlist.username }} lahjatoivelista.
-  </p>
   <p>
     <a href="/">Takaisin</a>
   </p>

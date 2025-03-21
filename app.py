@@ -49,6 +49,19 @@ def update_giftlist():
     giftlists.update_list(list_id, name, giftlist_type)
     return redirect("/giftlist/" + str(list_id))
 
+@app.route("/delete/<int:list_id>")
+def delete(list_id):
+    giftlist = giftlists.get_list(list_id)
+    return render_template("delete.html", giftlist=giftlist)
+
+@app.route("/delete_giftlist", methods=["POST"])
+def delete_giftlist():
+    list_id = request.form["list_id"]
+    if "delete" in request.form:
+        giftlists.delete_list(list_id)
+        return redirect("/")
+    return redirect("/giftlist/" + str(list_id))
+
 @app.route("/register")
 def register():
     return render_template("register.html")

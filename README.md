@@ -11,4 +11,4 @@
 
 ## Tämä vaihe
 * Käyttäjä pystyy luomaan tunnuksen ja kirjautumaan sisään sovellukseen.
-* Käyttäjä pystyy lisäämään sovellukseen lahjatoivelistoja.
+* Käyttäjä pystyy lisäämään sovellukseen lahjatoivelistoja. Lisäksi käyttäjä pystyy muokkaamaan ja poistamaan lisäämiään listoja.

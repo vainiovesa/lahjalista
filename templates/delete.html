@@ -1,0 +1,26 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+  <title>Poista lahjalista</title>
+</head>
+
+<body>
+  <h1>Poista lahjalista</h1>
+  <form action="/delete_giftlist" method="post">
+    <p>
+      Lahjalista {{ giftlist.title }}
+    </p>
+    <p>
+      {{ giftlist.type }}
+    </p>
+    <p>
+      Oletko varma, että haluat poistaa tämän lahjalistan?
+    </p>
+    <input type="hidden" name="list_id" value="{{ giftlist.id }}" />
+    <input type="submit" name="delete" value="Poista lahjalista" />
+    <input type="submit" name="cancel" value="Peruuta" />
+  </form>
+</body>
+
+</html>

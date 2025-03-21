@@ -28,3 +28,8 @@ def update_list(list_id, name, giftlist_type):
                             WHERE   id = ?
                                     """
     db.execute(sql, [name, giftlist_type, list_id])
+
+def delete_list(list_id):
+    sql = "DELETE FROM giftlists WHERE id = ?"
+    db.execute(sql, [list_id])
+

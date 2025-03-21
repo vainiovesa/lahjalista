@@ -7,6 +7,16 @@
 
 <body>
   <h1>{{ giftlist.title }}</h1>
+  {% if session.user_id == giftlist.user_id %}
+  <p>
+    <a href="/edit/{{ giftlist.id }}">Muokkaa</a>
+  </p>
+  {% else %}
+  <p>
+    Salasana
+  </p>
+  <p>
+  {% endif %}
   <h2>{{ giftlist.type }}</h2>
   <p>
     Henkilön {{ giftlist.username }} lahjatoivelista.

@@ -9,5 +9,22 @@ def get_lists():
     return db.query(sql)
 
 def get_list(list_id):
-    sql = "SELECT G.title, G.type, U.username FROM giftlists G, users U WHERE G.user_id = U.id AND G.id = ?"
+    sql = """SELECT G.id,
+                    G.title,
+                    G.type,
+                    U.id user_id,
+                    U.username
+            FROM    giftlists G,
+                    users U
+            WHERE 
+                    G.user_id = U.id AND
+                    G.id = ?
+                    """
     return db.query(sql, [list_id])[0]
+
+def update_list(list_id, name, giftlist_type):
+    sql = """UPDATE giftlists SET   title = ?,
+                                    type = ?
+                            WHERE   id = ?
+                                    """
+    db.execute(sql, [name, giftlist_type, list_id])

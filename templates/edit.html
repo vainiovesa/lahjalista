@@ -1,0 +1,23 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+  <title>Muokkaa lahjalistaa</title>
+</head>
+
+<body>
+  <form action="/update_giftlist" method="post">
+    <p>
+      Lahjalista: <br />
+      <input type="text" name="name" value="{{ giftlist.title }}"/>
+    </p>
+    <p>
+        Lahjalistan tyyppi:<br />
+        <textarea name="type" rows="5" cols="40">{{ giftlist.type }}</textarea>
+    </p>
+    <input type="hidden" name="list_id" value="{{ giftlist.id }}" />
+    <input type="submit" value="Muokkaa lahjalista" />
+  </form>
+</body>
+
+</html>

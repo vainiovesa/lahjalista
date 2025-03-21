@@ -36,6 +36,19 @@ def create_giftlist():
     giftlists.add_list(name, giftlist_type, user_id, password_hash)
     return redirect("/")
 
+@app.route("/edit/<int:list_id>")
+def edit(list_id):
+    giftlist = giftlists.get_list(list_id)
+    return render_template("edit.html", giftlist=giftlist)
+
+@app.route("/update_giftlist", methods=["POST"])
+def update_giftlist():
+    name = request.form["name"]
+    giftlist_type = request.form["type"]
+    list_id = request.form["list_id"]
+    giftlists.update_list(list_id, name, giftlist_type)
+    return redirect("/giftlist/" + str(list_id))
+
 @app.route("/register")
 def register():
     return render_template("register.html")

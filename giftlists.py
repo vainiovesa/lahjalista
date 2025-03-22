@@ -20,7 +20,8 @@ def get_list(list_id):
                     G.user_id = U.id AND
                     G.id = ?
                     """
-    return db.query(sql, [list_id])[0]
+    result = db.query(sql, [list_id])
+    return result[0] if result else None
 
 def update_list(list_id, name, giftlist_type):
     sql = """UPDATE giftlists SET   title = ?,

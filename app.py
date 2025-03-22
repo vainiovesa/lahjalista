@@ -1,6 +1,6 @@
 import sqlite3
 from flask import Flask
-from flask import redirect, render_template, request, session
+from flask import redirect, render_template, abort, request, session
 from werkzeug.security import generate_password_hash, check_password_hash
 import giftlists
 import config
@@ -36,6 +36,7 @@ def new_giftlist():
 
 @app.route("/create_giftlist", methods=["POST"])
 def create_giftlist():
+    require_login()
     name = request.form["name"]
     giftlist_type = request.form["type"]
     password1 = request.form["password1"]
@@ -44,16 +45,25 @@ def create_giftlist():
     if password1 != password2:
         return "VIRHE: salasanat eivät ole samat"
     password_hash = generate_password_hash(password1)
-    giftlists.add_list(name, giftlist_type, user_id, password_hash)
+    try:
+        giftlists.add_list(name, giftlist_type, user_id, password_hash)
+    except sqlite3.IntegrityError:
+        abort(403)
     return redirect("/")
 
 @app.route("/edit/<int:list_id>")
 def edit(list_id):
+    require_login()
     giftlist = giftlists.get_list(list_id)
+    if not giftlist:
+        abort(404)
+    if giftlist["user_id"] != session["user_id"]:
+        abort(403)
     return render_template("edit.html", giftlist=giftlist)
 
 @app.route("/update_giftlist", methods=["POST"])
 def update_giftlist():
+    require_login()
     name = request.form["name"]
     giftlist_type = request.form["type"]
     list_id = request.form["list_id"]
@@ -62,16 +72,23 @@ def update_giftlist():
 
 @app.route("/delete/<int:list_id>")
 def delete(list_id):
+    require_login()
     giftlist = giftlists.get_list(list_id)
+    if not giftlist:
+        abort(404)
+    if giftlist["user_id"] != session["user_id"]:
+        abort(403)
     return render_template("delete.html", giftlist=giftlist)
 
 @app.route("/delete_giftlist", methods=["POST"])
 def delete_giftlist():
     list_id = request.form["list_id"]
+    if "cancel" in request.form:
+        return redirect("/giftlist/" + str(list_id))
+    require_login()
     if "delete" in request.form:
         giftlists.delete_list(list_id)
         return redirect("/")
-    return redirect("/giftlist/" + str(list_id))
 
 @app.route("/register")
 def register():
@@ -116,3 +133,7 @@ def logout():
     del session["user_id"]
     del session["username"]
     return redirect("/")
+
+def require_login():
+    if "user_id" not in session:
+        abort(403)

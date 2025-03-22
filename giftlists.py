@@ -33,3 +33,14 @@ def delete_list(list_id):
     sql = "DELETE FROM giftlists WHERE id = ?"
     db.execute(sql, [list_id])
 
+def find(name, giftlist_type):
+    sql = """SELECT G.id,
+                    G.title,
+                    G.type,
+                    U.username
+            FROM    giftlists G,
+                    users U
+            WHERE   (G.title LIKE ? OR G.type LIKE ?) AND
+                    G.user_id = U.id
+                    """
+    return db.query(sql, ["%" + name + "%", "%" + giftlist_type + "%"])

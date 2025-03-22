@@ -19,6 +19,17 @@ def page(list_id):
     giftlist = giftlists.get_list(list_id)
     return render_template("show_list.html", giftlist = giftlist)
 
+@app.route("/find_giftlist")
+def find_giftlist():
+    name = request.args.get("name")
+    giftlist_type = request.args.get("type")
+    results = giftlists.find(name, giftlist_type) if name or giftlist_type else []
+    if not name:
+        name = ""
+    if not giftlist_type:
+        giftlist_type = ""
+    return render_template("find.html", name=name, type=giftlist_type, results=results)
+
 @app.route("/new_giftlist")
 def new_giftlist():
     return render_template("new_giftlist.html")

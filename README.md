@@ -12,3 +12,5 @@
 ## Tämä vaihe
 * Käyttäjä pystyy luomaan tunnuksen ja kirjautumaan sisään sovellukseen.
 * Käyttäjä pystyy lisäämään sovellukseen lahjatoivelistoja. Lisäksi käyttäjä pystyy muokkaamaan ja poistamaan lisäämiään listoja.
+* Käyttäjä näkee sovellukseen lisätyt lahjalistat. Käyttäjä näkee sekä itse lisäämänsä että muiden käyttäjien lisäämiä lahjalistoja.
+* Käyttäjä pystyy etsimään lahjalistoja hakusanalla. Käyttäjä pystyy hakemaan sekä itse lisäämiään että muiden käyttäjien lisäämiä listoja.

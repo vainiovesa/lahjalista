@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+  <title>Etsi lahjalista</title>
+</head>
+
+<body>
+  <form action="/find_giftlist" method="get">
+    <p>
+      Etsi nimellä: <br />
+      <input type="text" name="name" value="{{ name }}"/> <br />
+      Etsi lahjalistan tyypillä: <br />
+      <input type="text" name="type" value="{{ type }}"/>
+    </p>
+    <p>
+      <input type="submit" value="Etsi lahjalistaa" /> <br /> <br />
+      <a href="/">Takaisin etusivulle</a> <br />
+    </p>
+  </form>
+  {% if name or type %}
+    <h3>Tulokset</h3>
+    {% if results == [] %}
+      <p>
+        Hakusanoilla ei löytynyt tuloksia
+      </p>
+    {% else %}
+      {% for result in results %}
+      <a href="/giftlist/{{ result.id }}">{{ result.title }}</a> <br />
+      <li>{{ result.type }} käyttäjältä {{ result.username }}</li>
+      {% endfor %}
+    {% endif %}
+  {% endif %}
+</body>
+
+</html>

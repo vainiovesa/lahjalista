@@ -11,3 +11,10 @@ CREATE TABLE giftlists (
     user_id INTEGER REFERENCES users,
     password_hash TEXT
 );
+
+CREATE TABLE gifts (
+    id INTEGER PRIMARY KEY,
+    title TEXT,
+    getter_id INTEGER REFERENCES users,
+    giftlist_id INTEGER REFERENCES giftlists
+);

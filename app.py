@@ -23,11 +23,11 @@ def page(list_id):
 def find_giftlist():
     name = request.args.get("name")
     giftlist_type = request.args.get("type")
+    if not giftlist_type:
+        giftlist_type = ""
     results = giftlists.find(name, giftlist_type) if name or giftlist_type else []
     if not name:
         name = ""
-    if not giftlist_type:
-        giftlist_type = ""
     return render_template("find.html", name=name, type=giftlist_type, results=results)
 
 @app.route("/new_giftlist")

@@ -4,6 +4,7 @@ from flask import redirect, render_template, abort, request, session
 from werkzeug.security import generate_password_hash, check_password_hash
 import giftlists
 import config
+import gifts
 import db
 
 app = Flask(__name__)
@@ -14,10 +15,25 @@ def index():
     lists = giftlists.get_lists()
     return render_template("index.html", lists = lists)
 
-@app.route("/giftlist/<int:list_id>")
+@app.route("/giftlist/<int:list_id>", methods=["GET", "POST"])
 def page(list_id):
     giftlist = giftlists.get_list(list_id)
-    return render_template("show_list.html", giftlist = giftlist)
+    gift = gifts.get_gifts(list_id)
+    
+    if request.method == "GET":
+        return render_template("show_list.html", giftlist=giftlist, gift=gift)
+    
+    if request.method == "POST":
+        require_login()
+        password = request.form["password"]
+        sql = "SELECT password_hash FROM giftlists WHERE id = ?"
+        result = db.query(sql, [list_id])
+        password_hash = result[0]["password_hash"]
+        if check_password_hash(password_hash, password):
+            session["list_id"] = list_id
+            return render_template("show_list.html", giftlist=giftlist, gift=gift)
+        else:
+            return render_template("show_list.html", giftlist=giftlist, gift=gift)
 
 @app.route("/find_giftlist")
 def find_giftlist():
@@ -116,11 +132,17 @@ def login():
     if request.method == "POST":
         username = request.form["username"]
         password = request.form["password"]
-        # TODO. Throws exception, if trying to log in with non-existent username
         sql = "SELECT id, password_hash FROM users WHERE username = ?"
-        result = db.query(sql, [username])[0]
+        result = db.query(sql, [username])
+        
+        if len(result) != 0:
+            result = result[0]
+        else:
+            return "VIRHE: väärä tunnus tai salasana"
+        
         user_id = result["id"]
         password_hash = result["password_hash"]
+        
         if check_password_hash(password_hash, password):
             session["user_id"] = user_id
             session["username"] = username
@@ -132,6 +154,8 @@ def login():
 def logout():
     del session["user_id"]
     del session["username"]
+    if "list" in session:
+        del session["list_id"]
     return redirect("/")
 
 def require_login():

@@ -15,16 +15,30 @@
   <p>
     Sinun lahjatoivelistasi.
   </p>
+  <ul>
+    {% for g in gift %}
+    <li>{{ g.title }}</li>
+    {% endfor %}
+  </ul>
+  {% elif session.list_id == giftlist.giftlist_id %}
+  <ul>
+    {% for g in gift %} 
+    <li>{{ g.title }}</li>
+    {% endfor %}
+  </ul>
   {% else %}
   <p>
     Henkilön {{ giftlist.username }} lahjatoivelista.
   </p>
-  <p>
-    Salasana
-  </p>
+  <form action="/giftlist/{{ giftlist.giftlist_id }}" method="post">
+    <p>
+      Salasana:
+      <input type="password" name="password" />
+    </p>
+    <input type="submit" value="Näytä lahjalista" />
+  </form>
   <p>
   {% endif %}
-  <h2>{{ giftlist.type }}</h2>
   <p>
     <a href="/">Takaisin</a>
   </p>

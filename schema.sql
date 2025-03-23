@@ -8,7 +8,7 @@ CREATE TABLE giftlists (
     id INTEGER PRIMARY KEY,
     title TEXT,
     type TEXT,
-    user_id INTEGER REFERENCES users,
+    user_id INTEGER REFERENCES users ON DELETE CASCADE,
     password_hash TEXT
 );
 
@@ -16,5 +16,5 @@ CREATE TABLE gifts (
     id INTEGER PRIMARY KEY,
     title TEXT,
     getter_id INTEGER REFERENCES users,
-    giftlist_id INTEGER REFERENCES giftlists
+    giftlist_id INTEGER REFERENCES giftlists ON DELETE CASCADE
 );

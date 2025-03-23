@@ -9,9 +9,10 @@ def get_lists():
     return db.query(sql)
 
 def get_list(list_id):
-    sql = """SELECT G.id,
+    sql = """SELECT G.id giftlist_id,
                     G.title,
                     G.type,
+                    G.password_hash,
                     U.id user_id,
                     U.username
             FROM    giftlists G,

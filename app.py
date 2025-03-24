@@ -154,7 +154,7 @@ def login():
 def logout():
     del session["user_id"]
     del session["username"]
-    if "list" in session:
+    if "list_id" in session:
         del session["list_id"]
     return redirect("/")
 

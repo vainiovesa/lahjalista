@@ -19,21 +19,18 @@ def index():
 def page(list_id):
     giftlist = giftlists.get_list(list_id)
     gift = gifts.get_gifts(list_id)
-    
+
     if request.method == "GET":
         return render_template("show_list.html", giftlist=giftlist, gift=gift)
-    
+
     if request.method == "POST":
-        require_login()
         password = request.form["password"]
         sql = "SELECT password_hash FROM giftlists WHERE id = ?"
         result = db.query(sql, [list_id])
         password_hash = result[0]["password_hash"]
         if check_password_hash(password_hash, password):
             session["list_id"] = list_id
-            return render_template("show_list.html", giftlist=giftlist, gift=gift)
-        else:
-            return render_template("show_list.html", giftlist=giftlist, gift=gift)
+        return render_template("show_list.html", giftlist=giftlist, gift=gift)
 
 @app.route("/find_giftlist")
 def find_giftlist():
@@ -111,7 +108,7 @@ def register():
     return render_template("register.html")
 
 @app.route("/create", methods=["POST"])
-def create():
+def create(): # TODO Make sure no blank accounts are created
     username = request.form["username"]
     password1 = request.form["password1"]
     password2 = request.form["password2"]
@@ -134,15 +131,15 @@ def login():
         password = request.form["password"]
         sql = "SELECT id, password_hash FROM users WHERE username = ?"
         result = db.query(sql, [username])
-        
+
         if len(result) != 0:
             result = result[0]
         else:
             return "VIRHE: väärä tunnus tai salasana"
-        
+
         user_id = result["id"]
         password_hash = result["password_hash"]
-        
+
         if check_password_hash(password_hash, password):
             session["user_id"] = user_id
             session["username"] = username

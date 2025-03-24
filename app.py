@@ -49,19 +49,21 @@ def new_giftlist():
 
 @app.route("/create_giftlist", methods=["POST"])
 def create_giftlist():
-    require_login()
-    name = request.form["name"]
-    giftlist_type = request.form["type"]
-    password1 = request.form["password1"]
-    password2 = request.form["password2"]
-    user_id = session["user_id"]
-    if password1 != password2:
-        return "VIRHE: salasanat eivät ole samat"
-    password_hash = generate_password_hash(password1)
-    try:
-        giftlists.add_list(name, giftlist_type, user_id, password_hash)
-    except sqlite3.IntegrityError:
-        abort(403)
+    if "create" in request.form:
+        require_login()
+        name = request.form["name"]
+        giftlist_type = request.form["type"]
+        password1 = request.form["password1"]
+        password2 = request.form["password2"]
+        user_id = session["user_id"]
+        if password1 != password2:
+            return "VIRHE: salasanat eivät ole samat"
+        password_hash = generate_password_hash(password1)
+        try:
+            giftlists.add_list(name, giftlist_type, user_id, password_hash)
+        except sqlite3.IntegrityError:
+            abort(403)
+
     return redirect("/")
 
 @app.route("/edit/<int:list_id>")
@@ -76,11 +78,14 @@ def edit(list_id):
 
 @app.route("/update_giftlist", methods=["POST"])
 def update_giftlist():
-    require_login()
-    name = request.form["name"]
-    giftlist_type = request.form["type"]
     list_id = request.form["list_id"]
-    giftlists.update_list(list_id, name, giftlist_type)
+
+    if "tallenna muutokset" in request.form:
+        require_login()
+        name = request.form["name"]
+        giftlist_type = request.form["type"]
+        giftlists.update_list(list_id, name, giftlist_type)
+
     return redirect("/giftlist/" + str(list_id))
 
 @app.route("/delete/<int:list_id>")
@@ -96,10 +101,12 @@ def delete(list_id):
 @app.route("/delete_giftlist", methods=["POST"])
 def delete_giftlist():
     list_id = request.form["list_id"]
+
     if "cancel" in request.form:
         return redirect("/giftlist/" + str(list_id))
-    require_login()
+
     if "delete" in request.form:
+        require_login()
         giftlists.delete_list(list_id)
         return redirect("/")
 
@@ -109,24 +116,27 @@ def register():
 
 @app.route("/create", methods=["POST"])
 def create(): # TODO Make sure no blank accounts are created
-    username = request.form["username"]
-    password1 = request.form["password1"]
-    password2 = request.form["password2"]
-    if password1 != password2:
-        return "VIRHE: salasanat eivät ole samat"
-    password_hash = generate_password_hash(password1)
-    try:
-        sql = "INSERT INTO users (username, password_hash) VALUES (?, ?)"
-        db.execute(sql, [username, password_hash])
-    except sqlite3.IntegrityError:
-        return "VIRHE: tunnus on jo varattu"
+    if "create" in request.form:
+        username = request.form["username"]
+        password1 = request.form["password1"]
+        password2 = request.form["password2"]
+        if password1 != password2:
+            return "VIRHE: salasanat eivät ole samat"
+        password_hash = generate_password_hash(password1)
+        try:
+            sql = "INSERT INTO users (username, password_hash) VALUES (?, ?)"
+            db.execute(sql, [username, password_hash])
+        except sqlite3.IntegrityError:
+            return "VIRHE: tunnus on jo varattu"
+
     return redirect("/")
 
 @app.route("/login", methods=["GET", "POST"])
 def login():
     if request.method == "GET":
         return render_template("login.html")
-    if request.method == "POST":
+    
+    if request.method == "POST" and "login" in request.form:
         username = request.form["username"]
         password = request.form["password"]
         sql = "SELECT id, password_hash FROM users WHERE username = ?"
@@ -145,7 +155,10 @@ def login():
             session["username"] = username
             return redirect("/")
         else:
-            return "VIRHE: väärä tunnus tai salasana"
+            return "Väärä tunnus tai salasana"
+
+    if request.method == "POST" and "cancel" in request.form:
+        return redirect("/")
 
 @app.route("/logout")
 def logout():

@@ -9,11 +9,12 @@
   <h1>{{ giftlist.title }}</h1>
   {% if session.user_id == giftlist.user_id %}
   <p>
-    <a href="/edit/{{ giftlist.giftlist_id }}">Muokkaa</a> <br />
-    <a href="/delete/{{ giftlist.giftlist_id }}">Poista</a>
+    Sinun lahjatoivelistasi.<br/>
+    {{ giftlist.type }}.
   </p>
   <p>
-    Sinun lahjatoivelistasi.
+    <a href="/edit/{{ giftlist.giftlist_id }}">Muokkaa</a> <br />
+    <a href="/delete/{{ giftlist.giftlist_id }}">Poista</a>
   </p>
   <ul>
     {% for g in gift %}
@@ -21,6 +22,10 @@
     {% endfor %}
   </ul>
   {% elif session.list_id == giftlist.giftlist_id %}
+  <p>
+    Henkilön {{ giftlist.username }} lahjatoivelista.<br/>
+    {{ giftlist.type }}.
+  </p>
   <ul>
     {% for g in gift %} 
     <li>{{ g.title }}</li>
@@ -28,7 +33,8 @@
   </ul>
   {% else %}
   <p>
-    Henkilön {{ giftlist.username }} lahjatoivelista.
+    Henkilön {{ giftlist.username }} lahjatoivelista.<br/>
+    {{ giftlist.type }}.
   </p>
   <form action="/giftlist/{{ giftlist.giftlist_id }}" method="post">
     <p>

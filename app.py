@@ -24,13 +24,22 @@ def page(list_id):
         return render_template("show_list.html", giftlist=giftlist, gift=gift)
 
     if request.method == "POST":
-        password = request.form["password"]
-        sql = "SELECT password_hash FROM giftlists WHERE id = ?"
-        result = db.query(sql, [list_id])
-        password_hash = result[0]["password_hash"]
-        if check_password_hash(password_hash, password):
-            session["list_id"] = list_id
-        return render_template("show_list.html", giftlist=giftlist, gift=gift)
+        if "show" in request.form:
+            password = request.form["password"]
+            sql = "SELECT password_hash FROM giftlists WHERE id = ?"
+            result = db.query(sql, [list_id])
+            password_hash = result[0]["password_hash"]
+            if check_password_hash(password_hash, password):
+                session["list_id"] = list_id
+            return render_template("show_list.html", giftlist=giftlist, gift=gift)
+        
+        if "add" in request.form:
+            title = request.form["giftname"]            
+            try:
+                gifts.add_gift(title, list_id)
+            except sqlite3.IntegrityError:
+                return "VIRHE: listassa ei voi olla kahta samannimistä lahjaa"
+            return redirect("/giftlist/" + str(list_id))
 
 @app.route("/find_giftlist")
 def find_giftlist():

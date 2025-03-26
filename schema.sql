@@ -14,7 +14,7 @@ CREATE TABLE giftlists (
 
 CREATE TABLE gifts (
     id INTEGER PRIMARY KEY,
-    title TEXT,
-    getter_id INTEGER REFERENCES users,
+    title TEXT UNIQUE,
+    getter_id INTEGER,
     giftlist_id INTEGER REFERENCES giftlists ON DELETE CASCADE
 );

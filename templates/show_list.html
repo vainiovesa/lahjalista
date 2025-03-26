@@ -16,6 +16,13 @@
     <a href="/edit/{{ giftlist.giftlist_id }}">Muokkaa</a> <br />
     <a href="/delete/{{ giftlist.giftlist_id }}">Poista</a>
   </p>
+  <form action="/giftlist/{{ giftlist.giftlist_id }}" method="post">
+    <p>
+      Lisää lahja:
+      <input type="text" name="giftname" />
+    </p>
+    <input type="submit" value="Lisää" name="add" />
+  </form>
   <ul>
     {% for g in gift %}
     <li>{{ g.title }}</li>
@@ -41,7 +48,7 @@
       Salasana:
       <input type="password" name="password" />
     </p>
-    <input type="submit" value="Näytä lahjalista" />
+    <input type="submit" value="Näytä lahjalista" name="show" />
   </form>
   <p>
   {% endif %}

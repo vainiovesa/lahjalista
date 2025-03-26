@@ -80,7 +80,7 @@ def edit(list_id):
 def update_giftlist():
     list_id = request.form["list_id"]
 
-    if "tallenna muutokset" in request.form:
+    if "save" in request.form:
         require_login()
         name = request.form["name"]
         giftlist_type = request.form["type"]

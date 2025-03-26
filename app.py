@@ -12,6 +12,8 @@ app.secret_key = config.secret_key
 
 @app.route("/")
 def index():
+    if "user_id" not in session:
+        hide_list()
     lists = giftlists.get_lists()
     return render_template("index.html", lists = lists)
 
@@ -153,6 +155,7 @@ def login():
         return render_template("login.html")
     
     if request.method == "POST" and "login" in request.form:
+        hide_list()
         username = request.form["username"]
         password = request.form["password"]
         sql = "SELECT id, password_hash FROM users WHERE username = ?"
@@ -180,10 +183,13 @@ def login():
 def logout():
     del session["user_id"]
     del session["username"]
-    if "list_id" in session:
-        del session["list_id"]
+    hide_list()
     return redirect("/")
 
 def require_login():
     if "user_id" not in session:
         abort(403)
+
+def hide_list():
+    if "list_id" in session:
+        del session["list_id"]

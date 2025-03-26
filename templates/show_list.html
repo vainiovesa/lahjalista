@@ -25,7 +25,15 @@
   </form>
   <ul>
     {% for g in gift %}
-    <li>{{ g.title }}</li>
+    <li>
+      <form action="/giftlist/{{ giftlist.giftlist_id }}" method="post">
+        <p>
+          {{ g.title }}
+          <input type="hidden" name="gift_id" value="{{ g.id }}" />
+          <input type="submit" value="Poista" name="delete_gift" />
+        </p>
+      </form>
+    </li>
     {% endfor %}
   </ul>
   {% elif session.list_id == giftlist.giftlist_id %}

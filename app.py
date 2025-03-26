@@ -32,13 +32,18 @@ def page(list_id):
             if check_password_hash(password_hash, password):
                 session["list_id"] = list_id
             return render_template("show_list.html", giftlist=giftlist, gift=gift)
-        
+
         if "add" in request.form:
             title = request.form["giftname"]            
             try:
                 gifts.add_gift(title, list_id)
             except sqlite3.IntegrityError:
                 return "VIRHE: listassa ei voi olla kahta samannimistä lahjaa"
+            return redirect("/giftlist/" + str(list_id))
+
+        if "delete_gift" in request.form:
+            gift_id = request.form["gift_id"]
+            gifts.delete_gift(list_id, gift_id)
             return redirect("/giftlist/" + str(list_id))
 
 @app.route("/find_giftlist")

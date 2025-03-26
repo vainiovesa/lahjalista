@@ -115,11 +115,13 @@ def register():
     return render_template("register.html")
 
 @app.route("/create", methods=["POST"])
-def create(): # TODO Make sure no blank accounts are created
+def create():
     if "create" in request.form:
         username = request.form["username"]
         password1 = request.form["password1"]
         password2 = request.form["password2"]
+        if username == "" or password1 == "" or password2 == "":
+            return "VIRHE: tyhjä tunnus tai salasana"
         if password1 != password2:
             return "VIRHE: salasanat eivät ole samat"
         password_hash = generate_password_hash(password1)

@@ -36,16 +36,23 @@ def page(list_id):
             return render_template("show_list.html", giftlist=giftlist, gift=gift)
 
         if "add" in request.form:
-            title = request.form["giftname"]            
-            try:
-                gifts.add_gift(title, list_id)
-            except sqlite3.IntegrityError:
-                return "VIRHE: listassa ei voi olla kahta samannimistä lahjaa"
+            title = request.form["giftname"]
+            # TODO make sure no blank gifts are added
+            gifts.add_gift(title, list_id)
             return redirect("/giftlist/" + str(list_id))
 
         if "delete_gift" in request.form:
             gift_id = request.form["gift_id"]
             gifts.delete_gift(list_id, gift_id)
+            return redirect("/giftlist/" + str(list_id))
+        
+        if "buy" in request.form:
+            gift_id = request.form["gift_id"]
+            if "user_id" in session:
+                getter_id = session["user_id"]
+            else:
+                getter_id = 0
+            gifts.buy(list_id, gift_id, getter_id)
             return redirect("/giftlist/" + str(list_id))
 
 @app.route("/find_giftlist")

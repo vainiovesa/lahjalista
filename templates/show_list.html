@@ -31,6 +31,9 @@
           {{ g.title }}
           <input type="hidden" name="gift_id" value="{{ g.id }}" />
           <input type="submit" value="Poista" name="delete_gift" />
+          {% if g.getter_id != -1 %}
+          Joku on varannut tämän lahjan!
+          {% endif %}
         </p>
       </form>
     </li>
@@ -43,7 +46,19 @@
   </p>
   <ul>
     {% for g in gift %} 
-    <li>{{ g.title }}</li>
+    <li>
+      <form action="/giftlist/{{ giftlist.giftlist_id }}" method="post">
+        <p>
+          {{ g.title }}
+          {% if g.getter_id == -1 %}
+          <input type="hidden" name="gift_id" value="{{ g.id }}" />
+          <input type="submit" value="Hanki" name="buy" />
+          {% else %}
+          Tämä lahja on varattu
+          {% endif %}
+        </p>
+      </form>
+    </li>
     {% endfor %}
   </ul>
   {% else %}

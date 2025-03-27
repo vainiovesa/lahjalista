@@ -17,3 +17,7 @@ def get_gifts(giftlist_id):
 def delete_gift(giftlist_id, gift_id):
     sql = "DELETE FROM gifts WHERE giftlist_id = ? AND id = ?"
     db.execute(sql, [giftlist_id, gift_id])
+
+def buy(giftlist_id, gift_id, getter_id):
+    sql = "UPDATE gifts SET getter_id = ? WHERE id = ? AND giftlist_id = ?"
+    db.execute(sql, [getter_id, gift_id, giftlist_id])

@@ -36,12 +36,14 @@ def page(list_id):
             return render_template("show_list.html", giftlist=giftlist, gift=gift)
 
         if "add" in request.form:
+            require_login()
             title = request.form["giftname"]
             # TODO make sure no blank gifts are added
             gifts.add_gift(title, list_id)
             return redirect("/giftlist/" + str(list_id))
 
         if "delete_gift" in request.form:
+            require_login()
             gift_id = request.form["gift_id"]
             gifts.delete_gift(list_id, gift_id)
             return redirect("/giftlist/" + str(list_id))
@@ -161,30 +163,31 @@ def login():
     if request.method == "GET":
         return render_template("login.html")
     
-    if request.method == "POST" and "login" in request.form:
-        hide_list()
-        username = request.form["username"]
-        password = request.form["password"]
-        sql = "SELECT id, password_hash FROM users WHERE username = ?"
-        result = db.query(sql, [username])
+    if request.method == "POST":
+        if "login" in request.form:
+            hide_list()
+            username = request.form["username"]
+            password = request.form["password"]
+            sql = "SELECT id, password_hash FROM users WHERE username = ?"
+            result = db.query(sql, [username])
 
-        if len(result) != 0:
-            result = result[0]
-        else:
-            return "VIRHE: väärä tunnus tai salasana"
+            if len(result) != 0:
+                result = result[0]
+            else:
+                return "VIRHE: väärä tunnus tai salasana"
 
-        user_id = result["id"]
-        password_hash = result["password_hash"]
+            user_id = result["id"]
+            password_hash = result["password_hash"]
 
-        if check_password_hash(password_hash, password):
-            session["user_id"] = user_id
-            session["username"] = username
+            if check_password_hash(password_hash, password):
+                session["user_id"] = user_id
+                session["username"] = username
+                return redirect("/")
+            else:
+                return "Väärä tunnus tai salasana"
+
+        if "cancel" in request.form:
             return redirect("/")
-        else:
-            return "Väärä tunnus tai salasana"
-
-    if request.method == "POST" and "cancel" in request.form:
-        return redirect("/")
 
 @app.route("/logout")
 def logout():

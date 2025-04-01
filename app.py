@@ -77,7 +77,11 @@ def create_giftlist():
     if "create" in request.form:
         require_login()
         name = request.form["name"]
+        if len(name) > 70 or len(name) < 4:
+            abort(403)
         giftlist_type = request.form["type"]
+        if giftlist_type not in ["Hääjuhlan lahjatoivelista", "Syntymäpäiväjuhlan lahjatoivelista", "Valmistujaisten lahjatoivelista", "Muu lahjatoivelista"]:
+            abort(403)
         password1 = request.form["password1"]
         password2 = request.form["password2"]
         user_id = session["user_id"]
@@ -108,7 +112,11 @@ def update_giftlist():
     if "save" in request.form:
         require_login()
         name = request.form["name"]
+        if len(name) > 70 or len(name) < 4:
+            abort(403)
         giftlist_type = request.form["type"]
+        if giftlist_type not in ["Hääjuhlan lahjatoivelista", "Syntymäpäiväjuhlan lahjatoivelista", "Valmistujaisten lahjatoivelista", "Muu lahjatoivelista"]:
+            abort(403)
         giftlists.update_list(list_id, name, giftlist_type)
 
     return redirect("/giftlist/" + str(list_id))

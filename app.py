@@ -38,7 +38,8 @@ def page(list_id):
         if "add" in request.form:
             require_login()
             title = request.form["giftname"]
-            # TODO make sure no blank gifts are added
+            if len(title) > 90 or len(title) < 3:
+                abort(403)
             gifts.add_gift(title, list_id)
             return redirect("/giftlist/" + str(list_id))
 

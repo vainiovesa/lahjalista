@@ -18,8 +18,8 @@
   </p>
   <form action="/giftlist/{{ giftlist.giftlist_id }}" method="post">
     <p>
-      Lisää lahja:
-      <input type="text" name="giftname" />
+      Lisää lahja:</br>
+      <textarea rows="3" cols="30" name="giftname" minlength="3" maxlength="90" required ></textarea>
     </p>
     <input type="submit" value="Lisää" name="add" />
   </form>

@@ -20,7 +20,7 @@ def create_tables():
                 CREATE TABLE gifts (
                     id INTEGER PRIMARY KEY,
                     title TEXT,
-                    getter_id INTEGER,
+                    getter_id INTEGER REFERENCES users,
                     giftlist_id INTEGER REFERENCES giftlists ON DELETE CASCADE
                 );""")
 

@@ -1,8 +1,12 @@
 import db
 
-def add_gift(title, giftlist_id, getter_id=-1):
-    sql = "INSERT INTO gifts (title, getter_id, giftlist_id) VALUES (?, ?, ?)"
-    db.execute(sql, [title, getter_id, giftlist_id])
+def add_gift(title, giftlist_id, getter_id=None):
+    if getter_id:
+        sql = "INSERT INTO gifts (title, getter_id, giftlist_id) VALUES (?, ?, ?)"
+        db.execute(sql, [title, getter_id, giftlist_id])
+    else:
+        sql = "INSERT INTO gifts (title, giftlist_id) VALUES (?, ?)"
+        db.execute(sql, [title, giftlist_id])
 
 def get_gifts(giftlist_id):
     sql = """SELECT G.id,
@@ -24,4 +28,4 @@ def buy(giftlist_id, gift_id, getter_id):
 
 def get_list_id_of_gift(gift_id):
     sql = "SELECT giftlist_id FROM Gifts WHERE id = ?"
-    return db.query(sql, [gift_id])
+    return db.query(sql, [gift_id])[0][0]

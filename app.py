@@ -46,9 +46,8 @@ def page(list_id):
         if "delete_gift" in request.form:
             require_login()
             gift_id = request.form["gift_id"]
-            list_of_gift = gifts.get_list_id_of_gift(gift_id)[0][0]
+            list_of_gift = gifts.get_list_id_of_gift(gift_id)
             if list_of_gift != list_id:
-                raise ValueError(type(list_of_gift))
                 abort(403)
             gifts.delete_gift(list_id, gift_id)
             return redirect("/giftlist/" + str(list_id))

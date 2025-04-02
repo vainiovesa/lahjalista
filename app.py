@@ -53,14 +53,13 @@ def page(list_id):
             return redirect("/giftlist/" + str(list_id))
         
         if "buy" in request.form:
+            if not user_is_logged_in():
+                return redirect("/register")
             gift_id = request.form["gift_id"]
             list_of_gift = gifts.get_list_id_of_gift(gift_id)
             if list_of_gift != list_id:
                 abort(403)
-            if "user_id" in session:
-                getter_id = session["user_id"]
-            else:
-                getter_id = 0
+            getter_id = session["user_id"]
             gifts.buy(list_id, gift_id, getter_id)
             return redirect("/giftlist/" + str(list_id))
 
@@ -217,6 +216,11 @@ def logout():
 def require_login():
     if "user_id" not in session:
         abort(403)
+
+def user_is_logged_in():
+    if "user_id" in session:
+        return True
+    return False
 
 def hide_list():
     if "list_id" in session:

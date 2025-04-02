@@ -1,12 +1,8 @@
 import db
 
-def add_gift(title, giftlist_id, getter_id=None):
-    if getter_id:
-        sql = "INSERT INTO gifts (title, getter_id, giftlist_id) VALUES (?, ?, ?)"
-        db.execute(sql, [title, getter_id, giftlist_id])
-    else:
-        sql = "INSERT INTO gifts (title, giftlist_id) VALUES (?, ?)"
-        db.execute(sql, [title, giftlist_id])
+def add_gift(title, giftlist_id):
+    sql = "INSERT INTO gifts (title, giftlist_id) VALUES (?, ?)"
+    db.execute(sql, [title, giftlist_id])
 
 def get_gifts(giftlist_id):
     sql = """SELECT G.id,

@@ -54,4 +54,3 @@ def find(name, giftlist_type):
                         G.user_id = U.id
                         """
         return db.query(sql, ["%" + name + "%", giftlist_type])
-

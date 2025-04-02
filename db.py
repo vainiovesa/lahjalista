@@ -9,7 +9,7 @@ def get_connection():
 
 def execute(sql, params=[]):
     con = get_connection()
-    id = con.execute(sql, params)
+    id = con.execute(sql, params).lastrowid
     # result = con.execute(sql, params)
     con.commit()
     # g.last_insert_id = result.lastrowid

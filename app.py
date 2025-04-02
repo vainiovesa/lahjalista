@@ -157,10 +157,12 @@ def register():
 def create():
     if "create" in request.form:
         username = request.form["username"]
+        if len(username) < 2 or len(username) > 50:
+            abort(403)
         password1 = request.form["password1"]
         password2 = request.form["password2"]
-        if username == "" or password1 == "" or password2 == "":
-            return "VIRHE: tyhjä tunnus tai salasana"
+        if len(password1) < 1:
+            abort(403)
         if password1 != password2:
             return "VIRHE: salasanat eivät ole samat"
         password_hash = generate_password_hash(password1)

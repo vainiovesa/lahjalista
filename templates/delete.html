@@ -7,7 +7,7 @@
 
 <body>
   <h1>Poista lahjalista</h1>
-  <form action="/delete_giftlist" method="post">
+  <form action="/delete_giftlist/{{ giftlist.giftlist_id }}" method="post">
     <p>
       Lahjalistan nimi: {{ giftlist.title }}
     </p>
@@ -17,7 +17,6 @@
     <p>
       Oletko varma, että haluat poistaa tämän lahjalistan?
     </p>
-    <input type="hidden" name="list_id" value="{{ giftlist.giftlist_id }}" />
     <input type="submit" name="delete" value="Poista lahjalista" />
     <input type="submit" name="cancel" value="Peruuta" />
   </form>

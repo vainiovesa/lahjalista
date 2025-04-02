@@ -46,11 +46,17 @@ def page(list_id):
         if "delete_gift" in request.form:
             require_login()
             gift_id = request.form["gift_id"]
+            list_of_gift = gifts.get_list_id_of_gift(gift_id)
+            if list_of_gift != list_id:
+                abort(403)
             gifts.delete_gift(list_id, gift_id)
             return redirect("/giftlist/" + str(list_id))
         
         if "buy" in request.form:
             gift_id = request.form["gift_id"]
+            list_of_gift = gifts.get_list_id_of_gift(gift_id)
+            if list_of_gift != list_id:
+                abort(403)
             if "user_id" in session:
                 getter_id = session["user_id"]
             else:
@@ -132,9 +138,8 @@ def delete(list_id):
         abort(403)
     return render_template("delete.html", giftlist=giftlist)
 
-@app.route("/delete_giftlist", methods=["POST"])
-def delete_giftlist():
-    list_id = request.form["list_id"]
+@app.route("/delete_giftlist/<int:list_id>", methods=["POST"])
+def delete_giftlist(list_id):
 
     if "cancel" in request.form:
         return redirect("/giftlist/" + str(list_id))

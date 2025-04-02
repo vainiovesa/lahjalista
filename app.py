@@ -91,6 +91,8 @@ def create_giftlist():
             abort(403)
         password1 = request.form["password1"]
         password2 = request.form["password2"]
+        if len(password1) < 1:
+            abort(403)
         user_id = session["user_id"]
         if password1 != password2:
             return "VIRHE: salasanat eivät ole samat"

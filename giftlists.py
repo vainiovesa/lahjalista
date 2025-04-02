@@ -15,20 +15,16 @@ def get_list(list_id):
                     G.password_hash,
                     U.id user_id,
                     U.username
-            FROM    giftlists G,
+             FROM   giftlists G,
                     users U
-            WHERE 
-                    G.user_id = U.id AND
+             WHERE  G.user_id = U.id AND
                     G.id = ?
                     """
     result = db.query(sql, [list_id])
     return result[0] if result else None
 
 def update_list(list_id, name, giftlist_type):
-    sql = """UPDATE giftlists SET   title = ?,
-                                    type = ?
-                            WHERE   id = ?
-                                    """
+    sql = "UPDATE giftlists SET title = ?, type = ? WHERE id = ?"
     db.execute(sql, [name, giftlist_type, list_id])
 
 def delete_list(list_id):
@@ -52,9 +48,9 @@ def find(name, giftlist_type):
                         G.title,
                         G.type,
                         U.username
-                FROM    giftlists G,
+                 FROM   giftlists G,
                         users U
-                WHERE   (G.title LIKE ? AND G.type = ?) AND
+                 WHERE  (G.title LIKE ? AND G.type = ?) AND
                         G.user_id = U.id
                         """
         return db.query(sql, ["%" + name + "%", giftlist_type])

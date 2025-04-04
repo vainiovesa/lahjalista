@@ -9,11 +9,11 @@
   <form action="/update_giftlist" method="post">
     <p>
       Lahjalista: <br />
-      <input type="text" name="name" maxlength="70" minlength="4" value="{{ giftlist.title }}" required />
+      <input type="text" name="name" maxlength="70" minlength="4" value="{{ giftlist.title }}" />
     </p>
     <p>
         Lahjalistan tyyppi:<br />
-        <input type="radio" name="type" value="Hääjuhlan lahjatoivelista" required /> Häät
+        <input type="radio" name="type" value="Hääjuhlan lahjatoivelista" /> Häät
         <input type="radio" name="type" value="Syntymäpäiväjuhlan lahjatoivelista" /> Syntymäpäivät
         <input type="radio" name="type" value="Valmistujaisten lahjatoivelista" /> Valmistujaiset
         <input type="radio" name="type" value="Muu lahjatoivelista" /> Muu

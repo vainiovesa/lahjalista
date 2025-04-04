@@ -82,8 +82,12 @@ def new_giftlist():
 def create_giftlist():
     if "create" in request.form:
         require_login()
+        if "name" not in request.form:
+            abort(403)
         name = request.form["name"]
         if len(name) > 70 or len(name) < 4:
+            abort(403)
+        if "type" not in request.form:
             abort(403)
         giftlist_type = request.form["type"]
         if giftlist_type not in ["Hääjuhlan lahjatoivelista", "Syntymäpäiväjuhlan lahjatoivelista", "Valmistujaisten lahjatoivelista", "Muu lahjatoivelista"]:
@@ -141,7 +145,6 @@ def delete(list_id):
 
 @app.route("/delete_giftlist/<int:list_id>", methods=["POST"])
 def delete_giftlist(list_id):
-
     if "cancel" in request.form:
         return redirect("/giftlist/" + str(list_id))
 

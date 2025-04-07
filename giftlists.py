@@ -54,3 +54,7 @@ def find(name, giftlist_type):
                         G.user_id = U.id
                         """
         return db.query(sql, ["%" + name + "%", giftlist_type])
+
+def get_list_passwordhash(list_id):
+    sql = "SELECT password_hash FROM giftlists WHERE id = ?"
+    return db.query(sql, [list_id])

@@ -4,6 +4,7 @@ from flask import redirect, render_template, abort, request, session
 from werkzeug.security import generate_password_hash, check_password_hash
 import giftlists
 import config
+import users
 import gifts
 import db
 
@@ -28,8 +29,7 @@ def page(list_id):
     if request.method == "POST":
         if "show" in request.form:
             password = request.form["password"]
-            sql = "SELECT password_hash FROM giftlists WHERE id = ?"
-            result = db.query(sql, [list_id])
+            result = giftlists.get_list_passwordhash(list_id)
             password_hash = result[0]["password_hash"]
             if check_password_hash(password_hash, password):
                 session["list_id"] = list_id
@@ -171,8 +171,7 @@ def create():
             return "VIRHE: salasanat eivät ole samat"
         password_hash = generate_password_hash(password1)
         try:
-            sql = "INSERT INTO users (username, password_hash) VALUES (?, ?)"
-            db.execute(sql, [username, password_hash])
+            users.add(username, password_hash)
         except sqlite3.IntegrityError:
             return "VIRHE: tunnus on jo varattu"
 
@@ -188,8 +187,7 @@ def login():
             hide_list()
             username = request.form["username"]
             password = request.form["password"]
-            sql = "SELECT id, password_hash FROM users WHERE username = ?"
-            result = db.query(sql, [username])
+            result = users.find(username)
 
             if len(result) != 0:
                 result = result[0]

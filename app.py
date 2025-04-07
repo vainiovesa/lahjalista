@@ -218,8 +218,9 @@ def show_user(username):
     user = users.get_user(username)
     if not user:
         abort(404)
-    # messages = users.get_messages(username)
-    return render_template("user.html", user=user)
+    user_id = user["id"]
+    lists = users.get_lists(user_id)
+    return render_template("user.html", user=user, lists=lists)
 
 def require_login():
     if "user_id" not in session:

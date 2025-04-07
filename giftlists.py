@@ -5,7 +5,7 @@ def add_list(name, giftlist_type, user_id, password_hash):
     db.execute(sql, [name, giftlist_type, user_id, password_hash])
 
 def get_lists():
-    sql = "SELECT id, title FROM giftlists ORDER BY id DESC"
+    sql = "SELECT G.id id, G.title title, U.username username FROM giftlists G, users U WHERE G.user_id = U.id ORDER BY id DESC"
     return db.query(sql)
 
 def get_list(list_id):

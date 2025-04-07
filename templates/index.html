@@ -9,7 +9,7 @@
   <h1>Lahjalista</h1>
   {% if session.username %}
   <p>
-    Olet kirjautunut nimellä {{ session.username }}
+    Olet kirjautunut nimellä <a href="/user/{{ session.username }}">{{ session.username }}</a>
   </p>
   <p>
     <a href="new_giftlist">Uusi lahjalista</a>
@@ -34,7 +34,9 @@
   <h2>Lahjalistoja</h2>
   <ul>
     {% for list in lists %}
-    <li><a href="/giftlist/{{ list.id }}">{{ list.title }}</a></li>
+    <li>
+      <a href="/giftlist/{{ list.id }}">{{ list.title }}</a> henkilöltä <a href="/user/{{ list.username }}">{{ list.username }}</a>
+    </li>
     {% endfor %}
   </ul>
 </body>

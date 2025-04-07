@@ -6,7 +6,6 @@ import giftlists
 import config
 import users
 import gifts
-import db
 
 app = Flask(__name__)
 app.secret_key = config.secret_key
@@ -213,6 +212,14 @@ def logout():
     del session["username"]
     hide_list()
     return redirect("/")
+
+@app.route("/user/<username>")
+def show_user(username):
+    user = users.get_user(username)
+    if not user:
+        abort(404)
+    # messages = users.get_messages(username)
+    return render_template("user.html", user=user)
 
 def require_login():
     if "user_id" not in session:

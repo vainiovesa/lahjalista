@@ -9,7 +9,7 @@
   <h1>{{ giftlist.title }}</h1>
   {% if session.user_id == giftlist.user_id %}
   <p>
-    Sinun lahjatoivelistasi.<br/>
+    <a href="/user/{{ giftlist.username }}"> Sinun</a> lahjatoivelistasi.<br/>
     {{ giftlist.type }}.
   </p>
   <p>
@@ -41,7 +41,7 @@
   </ul>
   {% elif session.list_id == giftlist.giftlist_id %}
   <p>
-    Henkilön {{ giftlist.username }} lahjatoivelista.<br/>
+    Henkilön <a href="/user/{{ giftlist.username }}"> {{ giftlist.username }} </a> lahjatoivelista.<br/>
     {{ giftlist.type }}.
   </p>
   <ul>
@@ -63,7 +63,7 @@
   </ul>
   {% else %}
   <p>
-    Henkilön {{ giftlist.username }} lahjatoivelista.<br/>
+    Henkilön <a href="/user/{{ giftlist.username }}"> {{ giftlist.username }} </a> lahjatoivelista.<br/>
     {{ giftlist.type }}.
   </p>
   <form action="/giftlist/{{ giftlist.giftlist_id }}" method="post">

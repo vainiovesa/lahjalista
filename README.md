@@ -8,9 +8,9 @@ Sovellus, jolla voit ilmaista vieraillesi, mitä lahjoja toivot juhlissasi.
 - [x] Käyttäjä pystyy etsimään lahjalistoja hakusanalla. Käyttäjä pystyy hakemaan sekä itse lisäämiään että muiden käyttäjien lisäämiä listoja.
 - [x] Käyttäjä pystyy valitsemaan lahjalistalle yhden tai useamman luokittelun (esim. onko kyseessä syntymäpäivä- tai hääjuhla). Mahdolliset luokat ovat tietokannassa.
 - [x] Sovelluksessa on pääasiallisen lahjalistan lisäksi toissijainen lista, joka ilmaisee, onko toinen käyttäjä ostamassa lahjaa. Käyttäjä pystyy siis ilmoittamaan ostavansa listalla toivotun lahjan.
-- [ ] Sovelluksessa on käyttäjäsivut, jotka näyttävät tilastoja ja käyttäjän lisäämät lahjalistat.
+- [x] Sovelluksessa on käyttäjäsivut, jotka näyttävät tilastoja ja käyttäjän lisäämät lahjalistat.
 
 ### database.db-tiedoston luonti
-```
+```console
 python3 init.py
 ```

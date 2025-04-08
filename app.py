@@ -2,6 +2,7 @@ import sqlite3
 from flask import Flask
 from flask import redirect, render_template, abort, request, session
 from werkzeug.security import generate_password_hash, check_password_hash
+from init import list_types
 import giftlists
 import config
 import users
@@ -89,7 +90,7 @@ def create_giftlist():
         if "type" not in request.form:
             abort(403)
         giftlist_type = request.form["type"]
-        if giftlist_type not in ["Hääjuhlan lahjatoivelista", "Syntymäpäiväjuhlan lahjatoivelista", "Valmistujaisten lahjatoivelista", "Muu lahjatoivelista"]:
+        if giftlist_type not in list_types:
             abort(403)
         password1 = request.form["password1"]
         password2 = request.form["password2"]
@@ -99,8 +100,9 @@ def create_giftlist():
         if password1 != password2:
             return "VIRHE: salasanat eivät ole samat"
         password_hash = generate_password_hash(password1)
+        classes = [("type", giftlist_type)]
         try:
-            giftlists.add_list(name, giftlist_type, user_id, password_hash)
+            giftlists.add_list(name, classes, user_id, password_hash)
         except sqlite3.IntegrityError:
             abort(403)
 
@@ -126,9 +128,10 @@ def update_giftlist():
         if len(name) > 70 or len(name) < 4:
             abort(403)
         giftlist_type = request.form["type"]
-        if giftlist_type not in ["Hääjuhlan lahjatoivelista", "Syntymäpäiväjuhlan lahjatoivelista", "Valmistujaisten lahjatoivelista", "Muu lahjatoivelista"]:
+        if giftlist_type not in list_types:
             abort(403)
-        giftlists.update_list(list_id, name, giftlist_type)
+        classes = [("type", giftlist_type)]
+        giftlists.update_list(list_id, name, classes)
 
     return redirect("/giftlist/" + str(list_id))
 

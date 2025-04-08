@@ -23,7 +23,7 @@
   </form>
   {% if name or type %}
     <h3>Tulokset</h3>
-    {% if results == [] %}
+    {% if results | count == 0 %}
       <p>
         Haulla ei löytynyt tuloksia
       </p>

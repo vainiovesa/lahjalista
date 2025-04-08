@@ -74,10 +74,15 @@
     <input type="submit" value="Näytä lahjalista" name="show" />
   </form>
   <p>
-  {% endif %}
+    {% endif %}
+    <p>
+      <a href="/">Takaisin</a>
+    </p>
+  {% for message in get_flashed_messages() %}
   <p>
-    <a href="/">Takaisin</a>
+    <b>{{ message }}</b>
   </p>
+  {% endfor %}
 </body>
 
 </html>

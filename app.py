@@ -1,6 +1,6 @@
 import sqlite3
 from flask import Flask
-from flask import redirect, render_template, abort, request, session
+from flask import redirect, render_template, abort, flash, request, session
 from werkzeug.security import generate_password_hash, check_password_hash
 from init import list_types
 import giftlists
@@ -33,6 +33,8 @@ def page(list_id):
             password_hash = result[0]["password_hash"]
             if check_password_hash(password_hash, password):
                 session["list_id"] = list_id
+            else:
+                flash("VIRHE: Väärä salasana")
             return render_template("show_list.html", giftlist=giftlist, gift=gift)
 
         if "add" in request.form:
@@ -76,7 +78,7 @@ def find_giftlist():
 
 @app.route("/new_giftlist")
 def new_giftlist():
-    return render_template("new_giftlist.html")
+    return render_template("new_giftlist.html", filled={})
 
 @app.route("/create_giftlist", methods=["POST"])
 def create_giftlist():
@@ -98,13 +100,17 @@ def create_giftlist():
             abort(403)
         user_id = session["user_id"]
         if password1 != password2:
-            return "VIRHE: salasanat eivät ole samat"
+            flash("VIRHE: salasanat eivät ole samat")
+            filled = {"name": name}
+            return render_template("new_giftlist", filled=filled)
         password_hash = generate_password_hash(password1)
         classes = [("type", giftlist_type)]
         try:
             giftlists.add_list(name, classes, user_id, password_hash)
         except sqlite3.IntegrityError:
-            abort(403)
+            flash("Listan luomisessa tapahtui virhe")
+            filled = {"name": name}
+            return render_template("new_giftlist", filled=filled)
 
     return redirect("/")
 
@@ -116,17 +122,24 @@ def edit(list_id):
         abort(404)
     if giftlist["user_id"] != session["user_id"]:
         abort(403)
-    return render_template("edit.html", giftlist=giftlist)
+    return render_template("edit.html", giftlist=giftlist, filled={})
 
 @app.route("/update_giftlist", methods=["POST"])
 def update_giftlist():
     list_id = request.form["list_id"]
+    giftlist = giftlists.get_list(list_id)
 
     if "save" in request.form:
         require_login()
         name = request.form["name"]
         if len(name) > 70 or len(name) < 4:
-            abort(403)
+            flash("VIRHE: Lahjalistan nimen tulee olla 4 - 70 merkkiä pitkä")
+            filled = {"name": name}
+            return render_template("edit.html", giftlist=giftlist, filled=filled)
+        if "type" not in request.form:
+            flash("VIRHE: Valitse lahjalistan tyyppi")
+            filled = {"name": name}
+            return render_template("edit.html", giftlist=giftlist, filled=filled)
         giftlist_type = request.form["type"]
         if giftlist_type not in list_types:
             abort(403)
@@ -170,7 +183,8 @@ def create():
         if len(password1) < 1:
             abort(403)
         if password1 != password2:
-            return "VIRHE: salasanat eivät ole samat"
+            flash("VIRHE: salasanat eivät ole samat")
+            return redirect("/register")
         password_hash = generate_password_hash(password1)
         try:
             users.add(username, password_hash)
@@ -182,7 +196,7 @@ def create():
 @app.route("/login", methods=["GET", "POST"])
 def login():
     if request.method == "GET":
-        return render_template("login.html")
+        return render_template("login.html", filled={})
     
     if request.method == "POST":
         if "login" in request.form:
@@ -194,7 +208,9 @@ def login():
             if len(result) != 0:
                 result = result[0]
             else:
-                return "VIRHE: väärä tunnus tai salasana"
+                flash("VIRHE: väärä tunnus tai salasana")
+                filled = {"username": username}
+                return render_template("login.html", filled=filled)
 
             user_id = result["id"]
             password_hash = result["password_hash"]
@@ -204,7 +220,9 @@ def login():
                 session["username"] = username
                 return redirect("/")
             else:
-                return "Väärä tunnus tai salasana"
+                flash("VIRHE: väärä tunnus tai salasana")
+                filled = {"username": username}
+                return render_template("login.html", filled=filled)
 
         if "cancel" in request.form:
             return redirect("/")

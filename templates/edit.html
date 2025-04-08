@@ -22,6 +22,11 @@
     <input type="submit" value="Tallenna muutokset" name="save" />
     <input type="submit" value="Ei sittenkään" name="cancel" />
   </form>
+  {% for message in get_flashed_messages() %}
+  <p>
+    <b>{{ message }}</b>
+  </p>
+  {% endfor %}
 </body>
 
 </html>

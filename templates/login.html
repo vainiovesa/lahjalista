@@ -18,13 +18,15 @@
   <form action="/login" method="post">
     <p>
       Tunnus: <br />
-      <input type="text" name="username" />
+      <input type="text" name="username", value="{{ filled.username }}" required />
     </p>
     <p>
       Salasana: <br />
-      <input type="password" name="password" />
+      <input type="password" name="password" required />
     </p>
     <input type="submit" value="Kirjaudu" name="login" />
+  </form>
+  <form action="/">
     <input type="submit" value="Peruuta" name="cancel" />
   </form>
   <p>
@@ -32,6 +34,11 @@
     <a href="/register">rekisteröityä</a>
   </p>
   {% endif %}
+  {% for message in get_flashed_messages() %}
+  <p>
+    <b>{{ message }}</b>
+  </p>
+  {% endfor %}
 </body>
 
 </html>

@@ -30,8 +30,3 @@ CREATE TABLE gifts (
     getter_id INTEGER REFERENCES users,
     giftlist_id INTEGER REFERENCES giftlists ON DELETE CASCADE
 );
-
-INSERT INTO classes (title, value) VALUES ("type", "Hääjuhlan lahjatoivelista")
-INSERT INTO classes (title, value) VALUES ("type", "Syntymäpäiväjuhlan lahjatoivelista")
-INSERT INTO classes (title, value) VALUES ("type", "Valmistujaisten lahjatoivelista")
-INSERT INTO classes (title, value) VALUES ("type", "Muu lahjatoivelista")

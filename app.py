@@ -255,3 +255,6 @@ def user_is_logged_in():
 def hide_list():
     if "list_id" in session:
         del session["list_id"]
+
+if __name__=="__main__":
+    app.run()

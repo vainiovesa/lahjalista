@@ -10,7 +10,16 @@ Sovellus, jolla voit ilmaista vieraillesi, mitä lahjoja toivot juhlissasi.
 - [x] Sovelluksessa on pääasiallisen lahjalistan lisäksi toissijainen lista, joka ilmaisee, onko toinen käyttäjä ostamassa lahjaa. Käyttäjä pystyy siis ilmoittamaan ostavansa listalla toivotun lahjan.
 - [x] Sovelluksessa on käyttäjäsivut, jotka näyttävät tilastoja ja käyttäjän lisäämät lahjalistat.
 
-### database.db-tiedoston luonti
+### Sovelluksen alustus
+**Tietokantatiedoston luonti**
+```console
+sqlite3 database.db < schema.sql
+```
+**Luokat tietokantaan**
 ```console
 python3 init.py
+```
+**Sovellus käyntiin**
+```console
+python3 app.py
 ```

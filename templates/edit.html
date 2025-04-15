@@ -13,13 +13,32 @@
     </p>
     <p>
         Lahjalistan tyyppi:<br />
-        <input type="radio" name="type" value="Hääjuhlan lahjatoivelista" /> Häät
-        <input type="radio" name="type" value="Syntymäpäiväjuhlan lahjatoivelista" /> Syntymäpäivät
-        <input type="radio" name="type" value="Valmistujaisten lahjatoivelista" /> Valmistujaiset
-        <input type="radio" name="type" value="Muu lahjatoivelista" /> Muu
+        {% if giftlist.type == "Hääjuhlan lahjatoivelista" %}
+          <input type="radio" name="type" value="Hääjuhlan lahjatoivelista" required checked /> Häät
+        {% else %}
+          <input type="radio" name="type" value="Hääjuhlan lahjatoivelista" required /> Häät
+        {% endif %}
+        {% if giftlist.type == "Syntymäpäiväjuhlan lahjatoivelista" %}
+          <input type="radio" name="type" value="Syntymäpäiväjuhlan lahjatoivelista" checked /> Syntymäpäivät
+        {% else %}
+          <input type="radio" name="type" value="Syntymäpäiväjuhlan lahjatoivelista" /> Syntymäpäivät
+        {% endif %}
+        {% if giftlist.type == "Valmistujaisten lahjatoivelista" %}
+          <input type="radio" name="type" value="Valmistujaisten lahjatoivelista" checked /> Valmistujaiset
+        {% else %}
+          <input type="radio" name="type" value="Valmistujaisten lahjatoivelista" /> Valmistujaiset
+        {% endif %}
+        {% if giftlist.type == "Muu lahjatoivelista" %}
+          <input type="radio" name="type" value="Muu lahjatoivelista" checked/> Muu
+        {% else %}
+          <input type="radio" name="type" value="Muu lahjatoivelista" /> Muu
+        {% endif %}
     </p>
     <input type="hidden" name="list_id" value="{{ giftlist.giftlist_id }}" />
     <input type="submit" value="Tallenna muutokset" name="save" />
+  </form>
+  <form action="/update_giftlist" method="post">
+    <input type="hidden" name="list_id" value="{{ giftlist.giftlist_id }}" />
     <input type="submit" value="Ei sittenkään" name="cancel" />
   </form>
   {% for message in get_flashed_messages() %}

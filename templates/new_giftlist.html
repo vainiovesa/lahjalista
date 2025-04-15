@@ -13,18 +13,20 @@
     </p>
     <p>
         Lahjalistan tyyppi:<br />
-        <input type="radio" name="type" value="Hääjuhlan lahjatoivelista" /> Häät
+        <input type="radio" name="type" value="Hääjuhlan lahjatoivelista" required /> Häät
         <input type="radio" name="type" value="Syntymäpäiväjuhlan lahjatoivelista" /> Syntymäpäivät
         <input type="radio" name="type" value="Valmistujaisten lahjatoivelista" /> Valmistujaiset
         <input type="radio" name="type" value="Muu lahjatoivelista" /> Muu
     </p>
     <p>
       Listan salasana: <br />
-      <input type="password" name="password1" /> <br />
+      <input type="password" name="password1" required /> <br />
       Listan salasana uudestaan: <br />
-      <input type="password" name="password2" />
+      <input type="password" name="password2" required />
     </p>
     <input type="submit" value="Luo lahjalista" name="create" />
+  </form>
+  <form action="/create_giftlist" method="post">
     <input type="submit" value="Ei sittenkään" name="cancel" />
   </form>
   {% for message in get_flashed_messages() %}

@@ -102,7 +102,7 @@ def create_giftlist():
         if password1 != password2:
             flash("VIRHE: salasanat eivät ole samat")
             filled = {"name": name}
-            return render_template("new_giftlist", filled=filled)
+            return render_template("new_giftlist.html", filled=filled)
         password_hash = generate_password_hash(password1)
         classes = [("type", giftlist_type)]
         try:
@@ -110,7 +110,7 @@ def create_giftlist():
         except sqlite3.IntegrityError:
             flash("Listan luomisessa tapahtui virhe")
             filled = {"name": name}
-            return render_template("new_giftlist", filled=filled)
+            return render_template("new_giftlist.html", filled=filled)
 
     return redirect("/")
 
@@ -257,4 +257,4 @@ def hide_list():
         del session["list_id"]
 
 if __name__=="__main__":
-    app.run()
+    app.run(debug=True)

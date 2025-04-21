@@ -88,6 +88,7 @@ def new_giftlist():
 def create_giftlist():
     if "create" in request.form:
         require_login()
+        check_csrf()
         if "name" not in request.form:
             abort(403)
         name = request.form["name"]

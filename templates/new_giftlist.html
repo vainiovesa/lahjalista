@@ -24,6 +24,7 @@
       Listan salasana uudestaan: <br />
       <input type="password" name="password2" required />
     </p>
+    <input type="hidden" name="csrf_token" value="{{ session.csrf_token }}" />
     <input type="submit" value="Luo lahjalista" name="create" />
   </form>
   <form action="/create_giftlist" method="post">

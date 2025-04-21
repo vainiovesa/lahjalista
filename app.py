@@ -136,6 +136,7 @@ def update_giftlist():
 
     if "save" in request.form:
         require_login()
+        check_csrf()
         name = request.form["name"]
         if len(name) > 70 or len(name) < 4:
             flash("VIRHE: Lahjalistan nimen tulee olla 4 - 70 merkkiä pitkä")

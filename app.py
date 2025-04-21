@@ -248,9 +248,7 @@ def require_login():
         abort(403)
 
 def user_is_logged_in():
-    if "user_id" in session:
-        return True
-    return False
+    return "user_id" in session
 
 def hide_list():
     if "list_id" in session:

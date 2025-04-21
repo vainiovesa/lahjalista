@@ -11,13 +11,29 @@
       Etsi nimellä: <br />
       <input type="text" name="name" value="{{ name }}"/> <br />
       Etsi lahjalistan tyypillä: <br />
-      <input type="radio" name="type" value="Hääjuhlan lahjatoivelista" /> Häät
-      <input type="radio" name="type" value="Syntymäpäiväjuhlan lahjatoivelista" /> Syntymäpäivät
-      <input type="radio" name="type" value="Valmistujaisten lahjatoivelista" /> Valmistujaiset
-      <input type="radio" name="type" value="Muu lahjatoivelista" /> Muu
+      {% if type == "Hääjuhlan lahjatoivelista" %}
+        <input type="radio" name="type" value="Hääjuhlan lahjatoivelista" checked /> Häät
+      {% else %}
+        <input type="radio" name="type" value="Hääjuhlan lahjatoivelista" /> Häät
+      {% endif %}
+      {% if type == "Syntymäpäiväjuhlan lahjatoivelista" %}
+        <input type="radio" name="type" value="Syntymäpäiväjuhlan lahjatoivelista" checked /> Syntymäpäivät
+      {% else %}
+        <input type="radio" name="type" value="Syntymäpäiväjuhlan lahjatoivelista" /> Syntymäpäivät
+      {% endif %}
+      {% if type == "Valmistujaisten lahjatoivelista" %}
+        <input type="radio" name="type" value="Valmistujaisten lahjatoivelista" checked /> Valmistujaiset
+      {% else %}
+        <input type="radio" name="type" value="Valmistujaisten lahjatoivelista" /> Valmistujaiset
+      {% endif %}
+      {% if type == "Muu lahjatoivelista" %}
+        <input type="radio" name="type" value="Muu lahjatoivelista" checked /> Muu
+      {% else %}
+        <input type="radio" name="type" value="Muu lahjatoivelista" /> Muu
+      {% endif %}
     </p>
     <p>
-      <input type="submit" value="Etsi lahjalistaa" /> <br /> <br />
+      <input type="submit" name="search" value="Etsi lahjalistaa" /> <br /> <br />
       <a href="/">Takaisin etusivulle</a> <br />
     </p>
   </form>

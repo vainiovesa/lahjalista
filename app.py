@@ -1,4 +1,5 @@
 import sqlite3
+import secrets
 from flask import Flask
 from flask import redirect, render_template, abort, flash, request, session
 from werkzeug.security import generate_password_hash, check_password_hash
@@ -165,6 +166,7 @@ def delete_giftlist(list_id):
 
     if "delete" in request.form:
         require_login()
+        check_csrf()
         giftlists.delete_list(list_id)
         return redirect("/")
 
@@ -218,6 +220,7 @@ def login():
             if check_password_hash(password_hash, password):
                 session["user_id"] = user_id
                 session["username"] = username
+                session["csrf_token"] = secrets.token_hex(16)
                 return redirect("/")
             else:
                 flash("VIRHE: väärä tunnus tai salasana")
@@ -231,6 +234,7 @@ def login():
 def logout():
     del session["user_id"]
     del session["username"]
+    del session["csrf_token"]
     hide_list()
     return redirect("/")
 
@@ -253,6 +257,10 @@ def user_is_logged_in():
 def hide_list():
     if "list_id" in session:
         del session["list_id"]
+
+def check_csrf():
+    if request.form["csrf_token"] != session["csrf_token"]:
+        abort(403)
 
 if __name__=="__main__":
     app.run(debug=True)

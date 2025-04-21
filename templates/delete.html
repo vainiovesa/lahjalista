@@ -17,6 +17,7 @@
     <p>
       Oletko varma, että haluat poistaa tämän lahjalistan?
     </p>
+    <input type="hidden" name="csrf_token" value="{{ session.csrf_token }}" />
     <input type="submit" name="delete" value="Poista lahjalista" />
     <input type="submit" name="cancel" value="Peruuta" />
   </form>

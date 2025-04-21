@@ -40,6 +40,7 @@ def page(list_id):
 
         if "add" in request.form:
             require_login()
+            check_csrf()
             title = request.form["giftname"]
             if len(title) > 90 or len(title) < 3:
                 abort(403)
@@ -48,6 +49,7 @@ def page(list_id):
 
         if "delete_gift" in request.form:
             require_login()
+            check_csrf()
             gift_id = request.form["gift_id"]
             list_of_gift = gifts.get_list_id_of_gift(gift_id)
             if list_of_gift != list_id:
@@ -58,6 +60,7 @@ def page(list_id):
         if "buy" in request.form:
             if not user_is_logged_in():
                 return redirect("/register")
+            check_csrf()
             gift_id = request.form["gift_id"]
             list_of_gift = gifts.get_list_id_of_gift(gift_id)
             if list_of_gift != list_id:

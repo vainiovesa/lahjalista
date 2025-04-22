@@ -29,7 +29,7 @@
     <li>
       <form action="/giftlist/{{ giftlist.giftlist_id }}" method="post">
         <p>
-          {{ g.title }}
+          {{ g.title | show_lines }}
           <input type="hidden" name="csrf_token" value="{{ session.csrf_token }}" />
           <input type="hidden" name="gift_id" value="{{ g.id }}" />
           <input type="submit" value="Poista" name="delete_gift" />
@@ -52,7 +52,7 @@
     <li>
       <form action="/giftlist/{{ giftlist.giftlist_id }}" method="post">
         <p>
-          {{ g.title }}
+          {{ g.title | show_lines}}
           {% if g.getter_id == None %}
           <input type="hidden" name="csrf_token" value="{{ session.csrf_token }}" />
           <input type="hidden" name="gift_id" value="{{ g.id }}" />

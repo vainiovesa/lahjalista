@@ -1,5 +1,6 @@
 import sqlite3
 import secrets
+import markupsafe
 from flask import Flask
 from flask import redirect, render_template, abort, flash, request, session
 from werkzeug.security import generate_password_hash, check_password_hash
@@ -251,6 +252,12 @@ def show_user(username):
     user_id = user["id"]
     lists = users.get_lists(user_id)
     return render_template("user.html", user=user, lists=lists)
+
+@app.template_filter()
+def show_lines(content):
+    content = str(markupsafe.escape(content))
+    content = content.replace("\n", "<br />")
+    return markupsafe.Markup(content)
 
 def require_login():
     if "user_id" not in session:

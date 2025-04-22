@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+  <title>{% block title %}{% endblock %}</title>
+  <link rel="stylesheet" href="/static/main.css">
+</head>
+
+<body>
+  <div class="header">
+    <h2>Lahjalista</h2>
+  </div>
+
+  <div class="nav">
+    <nav>
+        {% if session.user_id %}
+        <p>
+          Olet kirjautunut nimellä <a href="/user/{{ session.username }}">{{ session.username }}</a> <br />
+          <a href="/logout">Kirjaudu ulos</a> |
+          <a href="new_giftlist">Uusi lahjalista</a> |
+          <a href="/">Etusivulle</a>
+        </p>
+        {% else %}
+        <p>
+          Kirjaudu sisään tai rekisteröidy <br />
+          <a href="/register">Rekisteröidy</a> |
+          <a href="/login">Kirjaudu sisään</a> |
+          <a href="/">Etusivulle</a>
+        </p>
+        {% endif %}
+    </nav>
+  </div>
+
+  <div class="content">
+    {% block content %}{% endblock %}
+  </div>
+</body>
+
+</html>

@@ -1,36 +1,18 @@
-<!DOCTYPE html>
-<html>
+{% extends "layout.html" %}
 
-<head>
-  <title>Lahjalista</title>
-</head>
+{% block title %}Lahjalista{% endblock %}
 
-<body>
-  <h1>Lahjalista</h1>
-  {% if session.user_id %}
-  <p>
-    Olet kirjautunut nimellä <a href="/user/{{ session.username }}">{{ session.username }}</a> <br />
-    <a href="/logout">Kirjaudu ulos</a> |
-    <a href="new_giftlist">Uusi lahjalista</a>
-  </p>
-  {% else %}
-  <p>
-    Kirjaudu sisään tai rekisteröidy <br />
-    <a href="/register">Rekisteröidy</a> |
-    <a href="/login">Kirjaudu sisään</a>
-  </p>
-  {% endif %}
-  <p>
-    <a href="find_giftlist">Etsi lahjalista</a>
-  </p>
-  <h2>Lahjalistoja</h2>
-  <ul>
-    {% for list in lists %}
-    <li>
-      <a href="/giftlist/{{ list.id }}">{{ list.title }}</a> henkilöltä <a href="/user/{{ list.username }}">{{ list.username }}</a>
-    </li>
-    {% endfor %}
-  </ul>
-</body>
-
-</html>
+{% block content %}
+<h2>Etusivu</h2>
+<p>
+  <a href="find_giftlist">Etsi lahjalista</a>
+</p>
+<h2>Lahjalistoja</h2>
+<ul>
+  {% for list in lists %}
+  <li>
+    <a href="/giftlist/{{ list.id }}">{{ list.title }}</a> henkilöltä <a href="/user/{{ list.username }}">{{ list.username }}</a>
+  </li>
+  {% endfor %}
+</ul>
+{% endblock %}

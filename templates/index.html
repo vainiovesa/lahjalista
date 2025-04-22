@@ -5,11 +5,10 @@
 {% block content %}
 <h2>Etusivu</h2>
 <h2>Lahjalistoja</h2>
-<ul>
-  {% for list in lists %}
-  <li>
-    <a href="/giftlist/{{ list.id }}">{{ list.title }}</a> henkilöltä <a href="/user/{{ list.username }}">{{ list.username }}</a>
-  </li>
-  {% endfor %}
-</ul>
+{% for list in lists %}
+<div class="list">
+  <a href="/giftlist/{{ list.id }}">{{ list.title }}</a> <br />
+  henkilöltä <a href="/user/{{ list.username }}">{{ list.username }}</a>
+</div>
+{% endfor %}
 {% endblock %}

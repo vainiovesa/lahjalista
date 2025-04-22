@@ -1,0 +1,29 @@
+body {
+    margin: auto;
+    max-width: 50em;
+    font-family: sans-serif;
+    background-color: #55251D;
+  }
+
+.header {
+    color: white;
+}
+
+.nav {
+    background-color: #696047;
+    padding: 0.5em;
+    margin: 0.5em 0;
+}
+
+.content {
+    background-color: #92AC86;
+    padding: 1em;
+    margin: 0.5em 0;
+}
+
+.list {
+    border: 2px solid black;
+    margin: 1em;
+    padding: 0.2em 0.5em;
+    background-color: white;
+}

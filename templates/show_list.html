@@ -45,6 +45,11 @@
 </p>
 <h3>Lahjatoiveet:</h3>
 <ul>
+  {% if gift | count == 0 %}
+  <p>
+    Lahjatoiveita ei ole vielä lisätty
+  </p>
+  {% endif %}
   {% for g in gift %} 
   <li>
     <form action="/giftlist/{{ giftlist.giftlist_id }}" method="post">

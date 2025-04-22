@@ -18,7 +18,7 @@ def index():
     if "user_id" not in session:
         hide_list()
     lists = giftlists.get_lists()
-    return render_template("index.html", lists = lists)
+    return render_template("index.html", lists=lists)
 
 @app.route("/giftlist/<int:list_id>", methods=["GET", "POST"])
 def page(list_id):
@@ -60,6 +60,7 @@ def page(list_id):
         
         if "buy" in request.form:
             if not user_is_logged_in():
+                flash("Vain rekisteröityneet käyttäjät voivat ilmoittaa ostavansa lahjoja")
                 return redirect("/register")
             check_csrf()
             gift_id = request.form["gift_id"]
@@ -116,6 +117,8 @@ def create_giftlist():
         flash("Listan luomisessa tapahtui virhe")
         filled = {"name": name}
         return render_template("new_giftlist.html", filled=filled)
+    
+    return redirect("/")
 
 @app.route("/edit/<int:list_id>")
 def edit(list_id):
@@ -193,7 +196,10 @@ def create():
     try:
         users.add(username, password_hash)
     except sqlite3.IntegrityError:
-        return "VIRHE: tunnus on jo varattu"
+        flash("Tunnus on jo varattu")
+        return redirect("/register")
+    
+    return redirect("/")
 
 @app.route("/login", methods=["GET", "POST"])
 def login():
@@ -265,5 +271,5 @@ def check_csrf():
     if request.form["csrf_token"] != session["csrf_token"]:
         abort(403)
 
-if __name__=="__main__":
+if __name__ == "__main__":
     app.run(debug=True)

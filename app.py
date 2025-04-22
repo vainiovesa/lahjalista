@@ -87,38 +87,35 @@ def new_giftlist():
 
 @app.route("/create_giftlist", methods=["POST"])
 def create_giftlist():
-    if "create" in request.form:
-        require_login()
-        check_csrf()
-        if "name" not in request.form:
-            abort(403)
-        name = request.form["name"]
-        if len(name) > 70 or len(name) < 4:
-            abort(403)
-        if "type" not in request.form:
-            abort(403)
-        giftlist_type = request.form["type"]
-        if giftlist_type not in list_types:
-            abort(403)
-        password1 = request.form["password1"]
-        password2 = request.form["password2"]
-        if len(password1) < 1:
-            abort(403)
-        user_id = session["user_id"]
-        if password1 != password2:
-            flash("VIRHE: salasanat eivät ole samat")
-            filled = {"name": name}
-            return render_template("new_giftlist.html", filled=filled)
-        password_hash = generate_password_hash(password1)
-        classes = [("type", giftlist_type)]
-        try:
-            giftlists.add_list(name, classes, user_id, password_hash)
-        except sqlite3.IntegrityError:
-            flash("Listan luomisessa tapahtui virhe")
-            filled = {"name": name}
-            return render_template("new_giftlist.html", filled=filled)
-
-    return redirect("/")
+    require_login()
+    check_csrf()
+    if "name" not in request.form:
+        abort(403)
+    name = request.form["name"]
+    if len(name) > 70 or len(name) < 4:
+        abort(403)
+    if "type" not in request.form:
+        abort(403)
+    giftlist_type = request.form["type"]
+    if giftlist_type not in list_types:
+        abort(403)
+    password1 = request.form["password1"]
+    password2 = request.form["password2"]
+    if len(password1) < 1:
+        abort(403)
+    user_id = session["user_id"]
+    if password1 != password2:
+        flash("VIRHE: salasanat eivät ole samat")
+        filled = {"name": name}
+        return render_template("new_giftlist.html", filled=filled)
+    password_hash = generate_password_hash(password1)
+    classes = [("type", giftlist_type)]
+    try:
+        giftlists.add_list(name, classes, user_id, password_hash)
+    except sqlite3.IntegrityError:
+        flash("Listan luomisessa tapahtui virhe")
+        filled = {"name": name}
+        return render_template("new_giftlist.html", filled=filled)
 
 @app.route("/edit/<int:list_id>")
 def edit(list_id):

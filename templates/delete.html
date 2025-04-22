@@ -1,26 +1,21 @@
-<!DOCTYPE html>
-<html>
+{% extends "layout.html" %}
 
-<head>
-  <title>Poista lahjalista</title>
-</head>
+{% block title %}Poista{% endblock %}
 
-<body>
-  <h1>Poista lahjalista</h1>
-  <form action="/delete_giftlist/{{ giftlist.giftlist_id }}" method="post">
-    <p>
-      Lahjalistan nimi: {{ giftlist.title }}
-    </p>
-    <p>
-      Lahjalistan tyyppi: {{ giftlist.type }}
-    </p>
-    <p>
-      Oletko varma, että haluat poistaa tämän lahjalistan?
-    </p>
-    <input type="hidden" name="csrf_token" value="{{ session.csrf_token }}" />
-    <input type="submit" name="delete" value="Poista lahjalista" />
-    <input type="submit" name="cancel" value="Peruuta" />
-  </form>
-</body>
-
-</html>
+{% block content %}
+<h2>Poista lahjalista</h2>
+<form action="/delete_giftlist/{{ giftlist.giftlist_id }}" method="post">
+  <p>
+    Lahjalistan nimi: {{ giftlist.title }}
+  </p>
+  <p>
+    Lahjalistan tyyppi: {{ giftlist.type }}
+  </p>
+  <p>
+    Oletko varma, että haluat poistaa tämän lahjalistan?
+  </p>
+  <input type="hidden" name="csrf_token" value="{{ session.csrf_token }}" />
+  <input type="submit" name="delete" value="Poista lahjalista" />
+  <input type="submit" name="cancel" value="Peruuta" />
+</form>
+{% endblock %}

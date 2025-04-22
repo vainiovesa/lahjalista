@@ -1,35 +1,30 @@
-<!DOCTYPE html>
-<html>
+{% extends "layout.html" %}
 
-<head>
-  <title>{{ user.username }}</title>
-</head>
+{% block title %}{{ user.username }}{% endblock %}
 
-<body>
-    <h1>Käyttäjä {{ user.username }}</h1>
-    {% if lists | count == 0 %}
-    <p>
-      Henkilöllä {{ user.username }} ei ole lahjalistoja.
-    </p>
-    {% elif lists | count == 1 %}
-    <p>
-      Henkilöllä {{ user.username }} on yksi lista:
-    </p>
-    {% else %}
-    <p>
-      Henkilöllä {{ user.username }} on {{ lists | count }} listaa:
-    </p>
-    {% endif %}
-    <ul>
-      {% for list in lists %}
-      <li>
-        <a href="/giftlist/{{ list.id }}">{{ list.title }}</a>
-      </li>
-      {% endfor %}
-    </ul>
-    <p>
-      <a href="/">Takaisin</a>
-    </p>
-</body>
-
-</html>
+{% block content %}
+<h2>Käyttäjä {{ user.username }}</h2>
+{% if lists | count == 0 %}
+<p>
+  Henkilöllä {{ user.username }} ei ole lahjalistoja.
+</p>
+{% elif lists | count == 1 %}
+<p>
+  Henkilöllä {{ user.username }} on yksi lista:
+</p>
+{% else %}
+<p>
+  Henkilöllä {{ user.username }} on {{ lists | count }} listaa:
+</p>
+{% endif %}
+<ul>
+  {% for list in lists %}
+  <li>
+    <a href="/giftlist/{{ list.id }}">{{ list.title }}</a>
+  </li>
+  {% endfor %}
+</ul>
+<p>
+  <a href="/">Takaisin</a>
+</p>
+{% endblock %}

@@ -1,52 +1,48 @@
-<!DOCTYPE html>
-<html>
+{% extends "layout.html" %}
 
-<head>
-  <title>Muokkaa lahjalistaa</title>
-</head>
+{% block title %}{{ giftlist.title }}{% endblock %}
 
-<body>
-  <form action="/update_giftlist" method="post">
-    <p>
-      Lahjalista: <br />
-      <input type="text" name="name" maxlength="70" minlength="4" value="{{ giftlist.title }}" />
-    </p>
-    <p>
-        Lahjalistan tyyppi:<br />
-        {% if giftlist.type == "Hääjuhlan lahjatoivelista" %}
-          <input type="radio" name="type" value="Hääjuhlan lahjatoivelista" required checked /> Häät
-        {% else %}
-          <input type="radio" name="type" value="Hääjuhlan lahjatoivelista" required /> Häät
-        {% endif %}
-        {% if giftlist.type == "Syntymäpäiväjuhlan lahjatoivelista" %}
-          <input type="radio" name="type" value="Syntymäpäiväjuhlan lahjatoivelista" checked /> Syntymäpäivät
-        {% else %}
-          <input type="radio" name="type" value="Syntymäpäiväjuhlan lahjatoivelista" /> Syntymäpäivät
-        {% endif %}
-        {% if giftlist.type == "Valmistujaisten lahjatoivelista" %}
-          <input type="radio" name="type" value="Valmistujaisten lahjatoivelista" checked /> Valmistujaiset
-        {% else %}
-          <input type="radio" name="type" value="Valmistujaisten lahjatoivelista" /> Valmistujaiset
-        {% endif %}
-        {% if giftlist.type == "Muu lahjatoivelista" %}
-          <input type="radio" name="type" value="Muu lahjatoivelista" checked/> Muu
-        {% else %}
-          <input type="radio" name="type" value="Muu lahjatoivelista" /> Muu
-        {% endif %}
-    </p>
-    <input type="hidden" name="list_id" value="{{ giftlist.giftlist_id }}" />
-    <input type="hidden" name="csrf_token" value="{{ session.csrf_token }}" />
-    <input type="submit" value="Tallenna muutokset" name="save" />
-  </form>
-  <form action="/update_giftlist" method="post">
-    <input type="hidden" name="list_id" value="{{ giftlist.giftlist_id }}" />
-    <input type="submit" value="Ei sittenkään" name="cancel" />
-  </form>
-  {% for message in get_flashed_messages() %}
+{% block content %}
+<h2>Muokkaa lahjalistaa</h2>
+<form action="/update_giftlist" method="post">
   <p>
-    <b>{{ message }}</b>
+    Lahjalistan otsikko: <br />
+    <input type="text" name="name" maxlength="70" minlength="4" value="{{ giftlist.title }}" />
   </p>
-  {% endfor %}
-</body>
-
-</html>
+  <p>
+      Lahjalistan tyyppi:<br />
+      {% if giftlist.type == "Hääjuhlan lahjatoivelista" %}
+        <input type="radio" name="type" value="Hääjuhlan lahjatoivelista" required checked /> Häät
+      {% else %}
+        <input type="radio" name="type" value="Hääjuhlan lahjatoivelista" required /> Häät
+      {% endif %}
+      {% if giftlist.type == "Syntymäpäiväjuhlan lahjatoivelista" %}
+        <input type="radio" name="type" value="Syntymäpäiväjuhlan lahjatoivelista" checked /> Syntymäpäivät
+      {% else %}
+        <input type="radio" name="type" value="Syntymäpäiväjuhlan lahjatoivelista" /> Syntymäpäivät
+      {% endif %}
+      {% if giftlist.type == "Valmistujaisten lahjatoivelista" %}
+        <input type="radio" name="type" value="Valmistujaisten lahjatoivelista" checked /> Valmistujaiset
+      {% else %}
+        <input type="radio" name="type" value="Valmistujaisten lahjatoivelista" /> Valmistujaiset
+      {% endif %}
+      {% if giftlist.type == "Muu lahjatoivelista" %}
+        <input type="radio" name="type" value="Muu lahjatoivelista" checked/> Muu
+      {% else %}
+        <input type="radio" name="type" value="Muu lahjatoivelista" /> Muu
+      {% endif %}
+  </p>
+  <input type="hidden" name="list_id" value="{{ giftlist.giftlist_id }}" />
+  <input type="hidden" name="csrf_token" value="{{ session.csrf_token }}" />
+  <input type="submit" value="Tallenna muutokset" name="save" />
+</form>
+<form action="/update_giftlist" method="post">
+  <input type="hidden" name="list_id" value="{{ giftlist.giftlist_id }}" />
+  <input type="submit" value="Ei sittenkään" name="cancel" />
+</form>
+{% for message in get_flashed_messages() %}
+<p>
+  <b>{{ message }}</b>
+</p>
+{% endfor %}
+{% endblock %}

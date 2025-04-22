@@ -7,24 +7,16 @@
 
 <body>
   <h1>Lahjalista</h1>
-  {% if session.username %}
+  {% if session.user_id %}
   <p>
-    Olet kirjautunut nimellä <a href="/user/{{ session.username }}">{{ session.username }}</a>
-  </p>
-  <p>
+    Olet kirjautunut nimellä <a href="/user/{{ session.username }}">{{ session.username }}</a> <br />
+    <a href="/logout">Kirjaudu ulos</a> |
     <a href="new_giftlist">Uusi lahjalista</a>
-  </p>
-  <p>
-    <a href="/logout">Kirjaudu ulos</a>
   </p>
   {% else %}
   <p>
-    Kirjaudu sisään tai rekisteröidy
-  </p>
-  <p>
-    <a href="/register">Rekisteröidy</a>
-  </p>
-  <p>
+    Kirjaudu sisään tai rekisteröidy <br />
+    <a href="/register">Rekisteröidy</a> |
     <a href="/login">Kirjaudu sisään</a>
   </p>
   {% endif %}

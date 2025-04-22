@@ -182,24 +182,21 @@ def register():
 
 @app.route("/create", methods=["POST"])
 def create():
-    if "create" in request.form:
-        username = request.form["username"]
-        if len(username) < 2 or len(username) > 50:
-            abort(403)
-        password1 = request.form["password1"]
-        password2 = request.form["password2"]
-        if len(password1) < 1:
-            abort(403)
-        if password1 != password2:
-            flash("VIRHE: salasanat eivät ole samat")
-            return redirect("/register")
-        password_hash = generate_password_hash(password1)
-        try:
-            users.add(username, password_hash)
-        except sqlite3.IntegrityError:
-            return "VIRHE: tunnus on jo varattu"
-
-    return redirect("/")
+    username = request.form["username"]
+    if len(username) < 2 or len(username) > 50:
+        abort(403)
+    password1 = request.form["password1"]
+    password2 = request.form["password2"]
+    if len(password1) < 1:
+        abort(403)
+    if password1 != password2:
+        flash("VIRHE: salasanat eivät ole samat")
+        return redirect("/register")
+    password_hash = generate_password_hash(password1)
+    try:
+        users.add(username, password_hash)
+    except sqlite3.IntegrityError:
+        return "VIRHE: tunnus on jo varattu"
 
 @app.route("/login", methods=["GET", "POST"])
 def login():
@@ -232,9 +229,6 @@ def login():
                 flash("VIRHE: väärä tunnus tai salasana")
                 filled = {"username": username}
                 return render_template("login.html", filled=filled)
-
-        if "cancel" in request.form:
-            return redirect("/")
 
 @app.route("/logout")
 def logout():

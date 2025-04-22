@@ -18,6 +18,7 @@
           Olet kirjautunut nimellä <a href="/user/{{ session.username }}">{{ session.username }}</a> <br />
           <a href="/logout">Kirjaudu ulos</a> |
           <a href="new_giftlist">Uusi lahjalista</a> |
+          <a href="find_giftlist">Etsi</a> |
           <a href="/">Etusivulle</a>
         </p>
         {% else %}
@@ -25,6 +26,7 @@
           Kirjaudu sisään tai rekisteröidy <br />
           <a href="/register">Rekisteröidy</a> |
           <a href="/login">Kirjaudu sisään</a> |
+          <a href="find_giftlist">Etsi</a> |
           <a href="/">Etusivulle</a>
         </p>
         {% endif %}

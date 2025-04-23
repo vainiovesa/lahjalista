@@ -2,7 +2,7 @@ body {
     margin: auto;
     max-width: 50em;
     font-family: sans-serif;
-    background-color: #55251D;
+    background-color: #2660A4;
   }
 
 .header {
@@ -10,13 +10,32 @@ body {
 }
 
 .nav {
-    background-color: #696047;
-    padding: 0.5em;
-    margin: 0.5em 0;
+    background-color: #9EADC8;
+    padding-top:  0.5em;
+    padding-bottom: 0.1em;
 }
 
+nav {
+    text-align: center;
+}
+
+nav ul {
+    padding: 0;
+    margin: 0.5em;
+}
+
+nav li {
+    display: inline-block;
+    padding: 0 1em;
+    margin: 0;
+}
+
+nav li:not(:last-of-type) {
+    border-right: 1px solid black;
+}  
+
 .content {
-    background-color: #92AC86;
+    background-color: #9EADC8;
     padding: 1em;
     margin: 0.5em 0;
 }
@@ -25,5 +44,5 @@ body {
     border: 2px solid black;
     margin: 1em;
     padding: 0.2em 0.5em;
-    background-color: white;
+    background-color: #EDF7F6;
 }

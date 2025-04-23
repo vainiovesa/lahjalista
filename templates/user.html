@@ -4,6 +4,38 @@
 
 {% block content %}
 <h2>Käyttäjä {{ user.username }}</h2>
+{% if session.username == user.username %}
+{% if lists | count == 0 %}
+<p>
+  Sinulla ei ole lahjalistoja.
+</p>
+{% elif lists | count == 1 %}
+<p>
+  Sinulla on yksi lista:
+</p>
+{% else %}
+<p>
+  Sinulla on {{ lists | count }} listaa:
+</p>
+{% endif %}
+<ul>
+  {% for list in lists %}
+  <li>
+    <a href="/giftlist/{{ list.id }}">{{ list.title }}</a>
+  </li>
+  {% endfor %}
+</ul>
+<b>
+  Olet ilmoittanut ostavasi seuraavia lahjoja:
+</b>
+<ul>
+  {% for buying in buyings %}
+  <li>
+    {{ buying.title | show_lines }}
+  </li>
+  {% endfor %}
+</ul>
+{% else %}
 {% if lists | count == 0 %}
 <p>
   Henkilöllä {{ user.username }} ei ole lahjalistoja.
@@ -24,7 +56,5 @@
   </li>
   {% endfor %}
 </ul>
-<p>
-  <a href="/">Takaisin</a>
-</p>
+{% endif %}
 {% endblock %}

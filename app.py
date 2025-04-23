@@ -244,11 +244,12 @@ def logout():
 @app.route("/user/<username>")
 def show_user(username):
     user = users.get_user(username)
+    buyings = gifts.users_buyings(username)
     if not user:
         abort(404)
     user_id = user["id"]
     lists = users.get_lists(user_id)
-    return render_template("user.html", user=user, lists=lists)
+    return render_template("user.html", user=user, lists=lists, buyings=buyings)
 
 @app.template_filter()
 def show_lines(content):

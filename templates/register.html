@@ -3,22 +3,24 @@
 {% block title %}Rekisteröityminen{% endblock %}
 
 {% block content %}
-<h2>Rekisteröityminen</h2>
-<form action="/create" method="post">
-  <p>
-    Tunnus: <br />
-    <input type="text" name="username" minlength="2" maxlength="50" required />
-  </p>
-  <p>
-    Salasana: <br />
-    <input type="password" name="password1" required />
-  </p>
-  <p>
-    Salasana uudestaan: <br />
-    <input type="password" name="password2" required />
-  </p>
-  <input type="submit" value="Luo tunnus" name="create" />
-</form>
+<h2 class="contenthead">Rekisteröityminen</h2>
+<div class="user-auth">
+  <form action="/create" method="post">
+    <p>
+      Tunnus: <br />
+      <input type="text" name="username" minlength="2" maxlength="50" required />
+    </p>
+    <p>
+      Salasana: <br />
+      <input type="password" name="password1" required />
+    </p>
+    <p>
+      Salasana uudestaan: <br />
+      <input type="password" name="password2" required />
+    </p>
+    <input type="submit" value="Luo tunnus" name="create" />
+  </form>
+</div>
 {% for message in get_flashed_messages() %}
   <p>
     <b>{{ message }}</b>

@@ -3,12 +3,19 @@
 {% block title %}Lahjalista{% endblock %}
 
 {% block content %}
-<h2>Etusivu</h2>
-<h2>Lahjalistoja</h2>
-{% for list in lists %}
-<div class="list">
-  <a href="/giftlist/{{ list.id }}">{{ list.title }}</a> <br />
-  henkilöltä <a href="/user/{{ list.username }}">{{ list.username }}</a>
+<div class="head">
+  <h2>Etusivu</h2>
+  <hr>
 </div>
-{% endfor %}
+<div class="giftlists">
+  <h2 class="contenthead">Lahjalistoja</h2>
+  <div class="list">
+    {% for list in lists %}
+    <div class="item">
+      <a href="/giftlist/{{ list.id }}">{{ list.title }}</a> <br />
+      henkilöltä <a href="/user/{{ list.username }}">{{ list.username }}</a>
+    </div>
+    {% endfor %}
+  </div>
+</div>
 {% endblock %}

@@ -3,83 +3,93 @@
 {% block title %}{{ giftlist.title }}{% endblock %}
 
 {% block content %}
-<h2>{{ giftlist.title }}</h2>
+<h2 class="contenthead">{{ giftlist.title }}</h2>
 {% if session.user_id == giftlist.user_id %}
-<p>
-  <a href="/user/{{ giftlist.username }}"> Sinun</a> lahjatoivelistasi.<br/>
-  {{ giftlist.type }}.
-</p>
-<p>
-  <a href="/edit/{{ giftlist.giftlist_id }}">Muokkaa</a> <br />
-  <a href="/delete/{{ giftlist.giftlist_id }}">Poista</a>
-</p>
-<form action="/giftlist/{{ giftlist.giftlist_id }}" method="post">
+<div class="giftlist">
   <p>
-    Lisää lahja:</br>
-    <textarea rows="3" cols="30" name="giftname" minlength="3" maxlength="90" required ></textarea>
+    <a href="/user/{{ giftlist.username }}"> Sinun</a> lahjatoivelistasi.<br/>
+    {{ giftlist.type }}.
   </p>
-  <input type="hidden" name="csrf_token" value="{{ session.csrf_token }}" />
-  <input type="submit" value="Lisää" name="add" />
-</form>
-<ul>
-  {% for g in gift %}
-  <li>
-    <form action="/giftlist/{{ giftlist.giftlist_id }}" method="post">
-      <p>
-        {{ g.title | show_lines }}
-        <input type="hidden" name="csrf_token" value="{{ session.csrf_token }}" />
-        <input type="hidden" name="gift_id" value="{{ g.id }}" />
-        <input type="submit" value="Poista" name="delete_gift" />
-        {% if g.getter_id != None %}
-        Joku on varannut tämän lahjan!
-        {% endif %}
-      </p>
-    </form>
-  </li>
-  {% endfor %}
-</ul>
+  <p>
+    <a href="/edit/{{ giftlist.giftlist_id }}">Muokkaa</a> <br />
+    <a href="/delete/{{ giftlist.giftlist_id }}">Poista</a>
+  </p>
+  <form action="/giftlist/{{ giftlist.giftlist_id }}" method="post">
+    <p>
+      Lisää lahja:</br>
+      <textarea rows="3" cols="30" name="giftname" minlength="3" maxlength="90" required ></textarea>
+    </p>
+    <input type="hidden" name="csrf_token" value="{{ session.csrf_token }}" />
+    <input type="submit" value="Lisää" name="add" />
+  </form>
+  <div class="gifts">
+    <div class="list">
+      {% for g in gift %}
+        <div class="item">
+          <p>
+            {{ g.title | show_lines }} <!-- menee laatikosta yli. korjattava 1/2 -->
+            <form action="/giftlist/{{ giftlist.giftlist_id }}" method="post">
+              <input type="hidden" name="csrf_token" value="{{ session.csrf_token }}" />
+              <input type="hidden" name="gift_id" value="{{ g.id }}" />
+              <input type="submit" value="Poista" name="delete_gift" />
+              {% if g.getter_id != None %}
+              Joku on varannut tämän lahjan!
+              {% endif %}
+            </form>
+          </p>
+        </div>
+      {% endfor %}
+    </div>
+  </div>
+</div>
 {% elif session.list_id == giftlist.giftlist_id %}
-<p>
-  Henkilön <a href="/user/{{ giftlist.username }}"> {{ giftlist.username }} </a> lahjatoivelista.<br/>
-  {{ giftlist.type }}.
-</p>
-<h3>Lahjatoiveet:</h3>
-<ul>
+<div class="giftlist">
+  <p>
+    Henkilön <a href="/user/{{ giftlist.username }}"> {{ giftlist.username }} </a> lahjatoivelista.<br/>
+    {{ giftlist.type }}.
+  </p>
+  <h3>Lahjatoiveet:</h3>
   {% if gift | count == 0 %}
-  <p>
-    Lahjatoiveita ei ole vielä lisätty
-  </p>
+    <div class="gifts">
+      Lahjatoiveita ei ole vielä lisätty
+    </div>
+  {% else %}
+    <div class="gifts">
+      <div class="list">
+        {% for g in gift %} 
+        <div class="item">
+          {{ g.title | show_lines}} <!-- menee laatikosta yli. korjattava 2/2 -->
+          <form action="/giftlist/{{ giftlist.giftlist_id }}" method="post">
+            {% if g.getter_id == None %}
+              <input type="hidden" name="csrf_token" value="{{ session.csrf_token }}" />
+              <input type="hidden" name="gift_id" value="{{ g.id }}" />
+              <input type="submit" value="Hanki" name="buy" />
+            {% else %}
+              <b>Tämä lahja on varattu</b>
+            {% endif %}
+          </form>
+        </div>
+        {% endfor %}
+      </div>
+    </div>
   {% endif %}
-  {% for g in gift %} 
-  <li>
-    <form action="/giftlist/{{ giftlist.giftlist_id }}" method="post">
-      <p>
-        {{ g.title | show_lines}}
-        {% if g.getter_id == None %}
-        <input type="hidden" name="csrf_token" value="{{ session.csrf_token }}" />
-        <input type="hidden" name="gift_id" value="{{ g.id }}" />
-        <input type="submit" value="Hanki" name="buy" />
-        {% else %}
-        <br />
-        <b>Tämä lahja on varattu</b>
-        {% endif %}
-      </p>
-    </form>
-  </li>
-  {% endfor %}
-</ul>
+</div>
 {% else %}
-<p>
-  Henkilön <a href="/user/{{ giftlist.username }}"> {{ giftlist.username }} </a> lahjatoivelista.<br/>
-  {{ giftlist.type }}.
-</p>
-<form action="/giftlist/{{ giftlist.giftlist_id }}" method="post">
+<div class="giftlist">
   <p>
-    Salasana:
-    <input type="password" name="password" />
+    Henkilön <a href="/user/{{ giftlist.username }}"> {{ giftlist.username }} </a> lahjatoivelista.<br/>
+    {{ giftlist.type }}.
   </p>
-  <input type="submit" value="Näytä lahjalista" name="show" />
-</form>
+</div>
+<div class="user-auth">
+  <form action="/giftlist/{{ giftlist.giftlist_id }}" method="post">
+    <p>
+      Salasana:
+      <input type="password" name="password" />
+    </p>
+    <input type="submit" value="Näytä lahjalista" name="show" />
+  </form>
+</div>
 <p>
 {% endif %}
 {% for message in get_flashed_messages() %}

@@ -3,50 +3,60 @@
 {% block title %}Lahjalista{% endblock %}
 
 {% block content %}
-<h2>Etsi</h2>
-<form action="/find_giftlist" method="get">
-  <p>
-    Etsi nimellä: <br />
+<div class="head">
+  <h2>Lahjalistahaku</h2>
+</div>
+<div class="find">  
+  <hr>
+  <form action="/find_giftlist" method="get">
+    <p>
+      Etsi nimellä: <br />
     <input type="text" name="name" value="{{ name }}"/> <br />
-    Etsi lahjalistan tyypillä: <br />
-  {% if type == "Hääjuhlan lahjatoivelista" %}
-    <input type="radio" name="type" value="Hääjuhlan lahjatoivelista" checked /> Häät
+      Etsi lahjalistan tyypillä: <br />
+    {% if type == "Hääjuhlan lahjatoivelista" %}
+      <input type="radio" name="type" value="Hääjuhlan lahjatoivelista" checked /> Häät
+    {% else %}
+      <input type="radio" name="type" value="Hääjuhlan lahjatoivelista" /> Häät
+    {% endif %}
+    {% if type == "Syntymäpäiväjuhlan lahjatoivelista" %}
+      <input type="radio" name="type" value="Syntymäpäiväjuhlan lahjatoivelista" checked /> Syntymäpäivät
+    {% else %}
+      <input type="radio" name="type" value="Syntymäpäiväjuhlan lahjatoivelista" /> Syntymäpäivät
+    {% endif %}
+    {% if type == "Valmistujaisten lahjatoivelista" %}
+      <input type="radio" name="type" value="Valmistujaisten lahjatoivelista" checked /> Valmistujaiset
+    {% else %}
+      <input type="radio" name="type" value="Valmistujaisten lahjatoivelista" /> Valmistujaiset
+    {% endif %}
+    {% if type == "Muu lahjatoivelista" %}
+      <input type="radio" name="type" value="Muu lahjatoivelista" checked /> Muu
+    {% else %}
+      <input type="radio" name="type" value="Muu lahjatoivelista" /> Muu
+    {% endif %}
+    </p>
+    <p>
+      <input type="submit" name="search" value="Etsi lahjalistaa" /> <br />
+    </p>
+    <hr>
+  </form>
+</div>
+<div class="results">
+  {% if name or type %}
+    <h3 class="contenthead">Tulokset</h3>
+  {% if results | count == 0 %}
+    <p>
+      Haulla ei löytynyt tuloksia
+    </p>
   {% else %}
-    <input type="radio" name="type" value="Hääjuhlan lahjatoivelista" /> Häät
+    <div class="list">
+      {% for result in results %}
+        <div class="item">
+          <a href="/giftlist/{{ result.id }}">{{ result.title }}</a> <br />
+          henkilöltä <a href="/user/{{ result.username }}">{{ result.username }}</a>
+        </div>
+      {% endfor %}
+    </div>
   {% endif %}
-  {% if type == "Syntymäpäiväjuhlan lahjatoivelista" %}
-    <input type="radio" name="type" value="Syntymäpäiväjuhlan lahjatoivelista" checked /> Syntymäpäivät
-  {% else %}
-    <input type="radio" name="type" value="Syntymäpäiväjuhlan lahjatoivelista" /> Syntymäpäivät
   {% endif %}
-  {% if type == "Valmistujaisten lahjatoivelista" %}
-    <input type="radio" name="type" value="Valmistujaisten lahjatoivelista" checked /> Valmistujaiset
-  {% else %}
-    <input type="radio" name="type" value="Valmistujaisten lahjatoivelista" /> Valmistujaiset
-  {% endif %}
-  {% if type == "Muu lahjatoivelista" %}
-    <input type="radio" name="type" value="Muu lahjatoivelista" checked /> Muu
-  {% else %}
-    <input type="radio" name="type" value="Muu lahjatoivelista" /> Muu
-  {% endif %}
-  </p>
-  <p>
-    <input type="submit" name="search" value="Etsi lahjalistaa" /> <br />
-  </p>
-</form>
-{% if name or type %}
-  <h3>Tulokset</h3>
-{% if results | count == 0 %}
-  <p>
-    Haulla ei löytynyt tuloksia
-  </p>
-{% else %}
-  <ul>
-  {% for result in results %}
-    <li><h4>{{ result.type }} käyttäjältä {{ result.username }}</h4>
-    <a href="/giftlist/{{ result.id }}">{{ result.title }}</a></li>
-  {% endfor %}
-  </ul>
-{% endif %}
-{% endif %}
+</div>
 {% endblock %}

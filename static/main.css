@@ -11,8 +11,8 @@ body {
 
 .nav {
     background-color: #9EADC8;
-    padding-top:  0.5em;
-    padding-bottom: 0.1em;
+    padding-top:  5px;
+    padding-bottom: 1px;
 }
 
 nav {
@@ -40,9 +40,33 @@ nav li:not(:last-of-type) {
     margin: 0.5em 0;
 }
 
-.list {
+.head {
+    text-align: center;
+}
+
+.contenthead {
+    font-family: serif;
+}
+
+.item {
     border: 2px solid black;
     margin: 1em;
     padding: 0.2em 0.5em;
     background-color: #EDF7F6;
 }
+
+.item input {
+    background-color: antiquewhite;
+}
+
+.user-auth {
+    display: inline-block;
+}
+
+.content .user-auth input {
+    background-color: lightgoldenrodyellow;
+}
+
+h2 {
+    margin: 4px;
+  }

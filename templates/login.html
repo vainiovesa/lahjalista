@@ -4,22 +4,24 @@
 
 {% block content %}
 {% if session.username %}
-<p>
-  Olet kirjautunut nimellä {{ session.username }}
-</p>
+<b>
+  Olet kirjautunut sisään.
+</b>
 {% else %}
-<h2>Kirjautuminen</h2>
-<form action="/login" method="post">
-  <p>
-    Tunnus: <br />
-    <input type="text" name="username", value="{{ filled.username }}" required />
-  </p>
-  <p>
-    Salasana: <br />
-    <input type="password" name="password" required />
-  </p>
-  <input type="submit" value="Kirjaudu" name="login" />
-</form>
+<h2 class="contenthead">Kirjautuminen</h2>
+<div class="user-auth">
+  <form action="/login" method="post">
+    <p>
+      Tunnus: <br />
+      <input type="text" name="username", value="{{ filled.username }}" required />
+    </p>
+    <p>
+      Salasana: <br />
+      <input type="password" name="password" required />
+    </p>
+    <input type="submit" value="Kirjaudu" name="login" />
+  </form>
+</div>
 {% endif %}
 {% for message in get_flashed_messages() %}
 <p>

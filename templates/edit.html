@@ -6,8 +6,8 @@
 <h2>Muokkaa lahjalistaa</h2>
 <form action="/update_giftlist" method="post">
   <p>
-    Lahjalistan otsikko: <br />
-    <input type="text" name="name" maxlength="70" minlength="4" value="{{ giftlist.title }}" />
+    <label for="name">Lahjalistan otsikko</label>:<br />
+    <input type="text" name="name" id="name" maxlength="70" minlength="4" value="{{ giftlist.title }}" />
   </p>
   {% for class in classes %}
   <p>

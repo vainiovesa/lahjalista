@@ -10,29 +10,20 @@
   <hr>
   <form action="/find_giftlist" method="get">
     <p>
-      Etsi nimellä: <br />
-    <input type="text" name="name" value="{{ name }}"/> <br />
-      Etsi lahjalistan tyypillä: <br />
-    {% if type == "Hääjuhlan lahjatoivelista" %}
-      <input type="radio" name="type" value="Hääjuhlan lahjatoivelista" checked /> Häät
-    {% else %}
-      <input type="radio" name="type" value="Hääjuhlan lahjatoivelista" /> Häät
-    {% endif %}
-    {% if type == "Syntymäpäiväjuhlan lahjatoivelista" %}
-      <input type="radio" name="type" value="Syntymäpäiväjuhlan lahjatoivelista" checked /> Syntymäpäivät
-    {% else %}
-      <input type="radio" name="type" value="Syntymäpäiväjuhlan lahjatoivelista" /> Syntymäpäivät
-    {% endif %}
-    {% if type == "Valmistujaisten lahjatoivelista" %}
-      <input type="radio" name="type" value="Valmistujaisten lahjatoivelista" checked /> Valmistujaiset
-    {% else %}
-      <input type="radio" name="type" value="Valmistujaisten lahjatoivelista" /> Valmistujaiset
-    {% endif %}
-    {% if type == "Muu lahjatoivelista" %}
-      <input type="radio" name="type" value="Muu lahjatoivelista" checked /> Muu
-    {% else %}
-      <input type="radio" name="type" value="Muu lahjatoivelista" /> Muu
-    {% endif %}
+      <label for="name">Etsi nimellä</label>:<br />
+      <input type="text" name="name" id="name" value="{{ name }}"/> <br />
+      {% for class in classes %}
+      <p>
+      <label for="{{ class }}">{{ class }}</label>:<br />
+        {% for value in classes[class] %}
+          {% if type == value %}
+            <input type="radio" name="{{ class }}" id="{{ class }}" value="{{ value }}" checked /> {{ value }}
+          {% else %}
+            <input type="radio" name="{{ class }}" id="{{ class }}" value="{{ value }}" /> {{ value }}
+          {% endif %}
+        {% endfor %}
+      </p>
+      {% endfor %}
     </p>
     <p>
       <input type="submit" name="search" value="Etsi lahjalistaa" /> <br />

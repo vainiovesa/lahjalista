@@ -75,13 +75,14 @@ def page(list_id):
 @app.route("/find_giftlist")
 def find_giftlist():
     name = request.args.get("name")
-    giftlist_type = request.args.get("type")
+    giftlist_type = request.args.get("Lahjalistan tyyppi")
     if not giftlist_type:
         giftlist_type = ""
     results = giftlists.find(name, giftlist_type) if name or giftlist_type else []
     if not name:
         name = ""
-    return render_template("find.html", name=name, type=giftlist_type, results=results)
+    all_classes = classes.get_classes()
+    return render_template("find.html", classes=all_classes, name=name, type=giftlist_type, results=results)
 
 @app.route("/new_giftlist")
 def new_giftlist():
@@ -154,8 +155,8 @@ def update_giftlist():
         giftlist_type = request.form["Lahjalistan tyyppi"]
         if giftlist_type not in list_types:
             abort(403)
-        added_classes = [("Lahjalistan tyyppi", giftlist_type)]
-        giftlists.update_list(list_id, name, added_classes)
+        updated_classes = [("Lahjalistan tyyppi", giftlist_type)]
+        giftlists.update_list(list_id, name, updated_classes)
 
     return redirect("/giftlist/" + str(list_id))
 

@@ -61,7 +61,7 @@ def find(name, giftlist_type):
                  FROM   giftlists G,
                         users U,
                         list_classes L
-                 WHERE  (G.title LIKE ? AND L.title = "type" AND L.value = ?) AND
+                 WHERE  (G.title LIKE ? AND L.title = "Lahjalistan tyyppi" AND L.value = ?) AND
                         G.user_id = U.id AND
                         G.id = L.list_id
                         """

@@ -16,8 +16,8 @@
   </p>
   <form action="/giftlist/{{ giftlist.giftlist_id }}" method="post">
     <p>
-      Lisää lahja:</br>
-      <textarea rows="3" cols="30" name="giftname" minlength="3" maxlength="90" required ></textarea>
+      <label for="giftname">Lisää lahja</label>:</br>
+      <textarea rows="3" cols="30" name="giftname" id="giftname" minlength="3" maxlength="90" required ></textarea>
     </p>
     <input type="hidden" name="csrf_token" value="{{ session.csrf_token }}" />
     <input type="submit" value="Lisää" name="add" />
@@ -82,8 +82,8 @@
 <div class="user-auth">
   <form action="/giftlist/{{ giftlist.giftlist_id }}" method="post">
     <p>
-      Salasana:
-      <input type="password" name="password" />
+      <label for="password">Salasana</label>:
+      <input type="password" id="password" name="password" />
     </p>
     <input type="submit" value="Näytä lahjalista" name="show" />
   </form>

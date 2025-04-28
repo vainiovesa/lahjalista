@@ -12,12 +12,12 @@
 <div class="user-auth">
   <form action="/login" method="post">
     <p>
-      Tunnus: <br />
-      <input type="text" name="username", value="{{ filled.username }}" required />
+      <label for="username">Tunnus</label>:<br />
+      <input type="text" name="username" id="username" value="{{ filled.username }}" required />
     </p>
     <p>
-      Salasana: <br />
-      <input type="password" name="password" required />
+      <label for="password">Salasana</label>:<br />
+      <input type="password" name="password" id="password" required />
     </p>
     <input type="submit" value="Kirjaudu" name="login" />
   </form>

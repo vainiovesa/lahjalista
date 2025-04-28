@@ -26,17 +26,15 @@
     <div class="list">
       {% for g in gift %}
         <div class="item">
-          <p>
-            {{ g.title | show_lines }} <!-- menee laatikosta yli. korjattava 1/2 -->
-            <form action="/giftlist/{{ giftlist.giftlist_id }}" method="post">
-              <input type="hidden" name="csrf_token" value="{{ session.csrf_token }}" />
-              <input type="hidden" name="gift_id" value="{{ g.id }}" />
-              <input type="submit" value="Poista" name="delete_gift" />
-              {% if g.getter_id != None %}
-              Joku on varannut tämän lahjan!
-              {% endif %}
-            </form>
-          </p>
+          {{ g.title | show_lines }} <!-- menee laatikosta yli. korjattava 1/2 -->
+          <form action="/giftlist/{{ giftlist.giftlist_id }}" method="post">
+            <input type="hidden" name="csrf_token" value="{{ session.csrf_token }}" />
+            <input type="hidden" name="gift_id" value="{{ g.id }}" />
+            <input type="submit" value="Poista" name="delete_gift" />
+            {% if g.getter_id != None %}
+            Joku on varannut tämän lahjan!
+            {% endif %}
+          </form>
         </div>
       {% endfor %}
     </div>

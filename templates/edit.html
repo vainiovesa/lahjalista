@@ -9,29 +9,18 @@
     Lahjalistan otsikko: <br />
     <input type="text" name="name" maxlength="70" minlength="4" value="{{ giftlist.title }}" />
   </p>
+  {% for class in classes %}
   <p>
-      Lahjalistan tyyppi:<br />
-      {% if giftlist.type == "Hääjuhlan lahjatoivelista" %}
-        <input type="radio" name="type" value="Hääjuhlan lahjatoivelista" required checked /> Häät
+  <label for="{{ class }}">{{ class }}</label>:<br />
+    {% for value in classes[class] %}
+      {% if giftlist.type == value %}
+        <input type="radio" name="{{ class }}" id="{{ class }}" value="{{ value }}" required checked /> {{ value }}
       {% else %}
-        <input type="radio" name="type" value="Hääjuhlan lahjatoivelista" required /> Häät
+        <input type="radio" name="{{ class }}" id="{{ class }}" value="{{ value }}" required /> {{ value }}
       {% endif %}
-      {% if giftlist.type == "Syntymäpäiväjuhlan lahjatoivelista" %}
-        <input type="radio" name="type" value="Syntymäpäiväjuhlan lahjatoivelista" checked /> Syntymäpäivät
-      {% else %}
-        <input type="radio" name="type" value="Syntymäpäiväjuhlan lahjatoivelista" /> Syntymäpäivät
-      {% endif %}
-      {% if giftlist.type == "Valmistujaisten lahjatoivelista" %}
-        <input type="radio" name="type" value="Valmistujaisten lahjatoivelista" checked /> Valmistujaiset
-      {% else %}
-        <input type="radio" name="type" value="Valmistujaisten lahjatoivelista" /> Valmistujaiset
-      {% endif %}
-      {% if giftlist.type == "Muu lahjatoivelista" %}
-        <input type="radio" name="type" value="Muu lahjatoivelista" checked/> Muu
-      {% else %}
-        <input type="radio" name="type" value="Muu lahjatoivelista" /> Muu
-      {% endif %}
+    {% endfor %}
   </p>
+  {% endfor %}
   <input type="hidden" name="list_id" value="{{ giftlist.giftlist_id }}" />
   <input type="hidden" name="csrf_token" value="{{ session.csrf_token }}" />
   <input type="submit" value="Tallenna muutokset" name="save" />

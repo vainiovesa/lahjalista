@@ -9,21 +9,22 @@
 <div class="user-auth">
   <form action="/create_giftlist" method="post">
     <p>
-      Lahjalistan otsikko: <br />
-      <input type="text" name="name" maxlength="70" minlength="4" />
+      <label for="name">Lahjalistan otsikko</label>:<br />
+      <input type="text" name="name" id="name" maxlength="70" minlength="4" />
     </p>
+    {% for class in classes %}
     <p>
-      Lahjalistan tyyppi:<br />
-      <input type="radio" name="type" value="Hääjuhlan lahjatoivelista" required /> Häät
-      <input type="radio" name="type" value="Syntymäpäiväjuhlan lahjatoivelista" /> Syntymäpäivät
-      <input type="radio" name="type" value="Valmistujaisten lahjatoivelista" /> Valmistujaiset
-      <input type="radio" name="type" value="Muu lahjatoivelista" /> Muu
+    <label for="{{ class }}">{{ class }}</label>:<br />
+      {% for value in classes[class] %}
+      <input type="radio" name="{{ class }}" id="{{ class }}" value="{{ value }}" required /> {{ value }}
+      {% endfor %}
     </p>
+    {% endfor %}
     <p>
-      Listan salasana: <br />
-      <input type="password" name="password1" required /> <br />
-      Listan salasana uudestaan: <br />
-      <input type="password" name="password2" required />
+      <label for="password1">Listan salasana</label>:<br />
+      <input type="password" name="password1" id="password1" required /> <br />
+      <label for="password2">Listan salasana uudestaan</label>:<br />
+      <input type="password" name="password2" id="password2" required />
     </p>
     <input type="hidden" name="csrf_token" value="{{ session.csrf_token }}" />
     <input type="submit" value="Luo lahjalista" name="create" />

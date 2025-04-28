@@ -4,8 +4,9 @@ import markupsafe
 from flask import Flask
 from flask import redirect, render_template, abort, flash, request, session
 from werkzeug.security import generate_password_hash, check_password_hash
-from init import list_types
+from classes import list_types
 import giftlists
+import classes
 import config
 import users
 import gifts
@@ -84,7 +85,8 @@ def find_giftlist():
 
 @app.route("/new_giftlist")
 def new_giftlist():
-    return render_template("new_giftlist.html", filled={})
+    all_classes = classes.get_classes()
+    return render_template("new_giftlist.html", classes=all_classes, filled={})
 
 @app.route("/create_giftlist", methods=["POST"])
 def create_giftlist():
@@ -95,9 +97,9 @@ def create_giftlist():
     name = request.form["name"]
     if len(name) > 70 or len(name) < 4:
         abort(403)
-    if "type" not in request.form:
+    if "Lahjalistan tyyppi" not in request.form:
         abort(403)
-    giftlist_type = request.form["type"]
+    giftlist_type = request.form["Lahjalistan tyyppi"]
     if giftlist_type not in list_types:
         abort(403)
     password1 = request.form["password1"]
@@ -110,9 +112,9 @@ def create_giftlist():
         filled = {"name": name}
         return render_template("new_giftlist.html", filled=filled)
     password_hash = generate_password_hash(password1)
-    classes = [("type", giftlist_type)]
+    added_classes = [("Lahjalistan tyyppi", giftlist_type)]
     try:
-        giftlists.add_list(name, classes, user_id, password_hash)
+        giftlists.add_list(name, added_classes, user_id, password_hash)
     except sqlite3.IntegrityError:
         flash("Listan luomisessa tapahtui virhe")
         filled = {"name": name}
@@ -128,12 +130,14 @@ def edit(list_id):
         abort(404)
     if giftlist["user_id"] != session["user_id"]:
         abort(403)
-    return render_template("edit.html", giftlist=giftlist, filled={})
+    all_classes = classes.get_classes()
+    return render_template("edit.html", classes=all_classes, giftlist=giftlist, filled={})
 
 @app.route("/update_giftlist", methods=["POST"])
 def update_giftlist():
     list_id = request.form["list_id"]
     giftlist = giftlists.get_list(list_id)
+    all_classes = classes.get_classes()
 
     if "save" in request.form:
         require_login()
@@ -142,16 +146,16 @@ def update_giftlist():
         if len(name) > 70 or len(name) < 4:
             flash("VIRHE: Lahjalistan nimen tulee olla 4 - 70 merkkiä pitkä")
             filled = {"name": name}
-            return render_template("edit.html", giftlist=giftlist, filled=filled)
-        if "type" not in request.form:
+            return render_template("edit.html", classes=all_classes, giftlist=giftlist, filled=filled)
+        if "Lahjalistan tyyppi" not in request.form:
             flash("VIRHE: Valitse lahjalistan tyyppi")
             filled = {"name": name}
-            return render_template("edit.html", giftlist=giftlist, filled=filled)
-        giftlist_type = request.form["type"]
+            return render_template("edit.html", classes=all_classes, giftlist=giftlist, filled=filled)
+        giftlist_type = request.form["Lahjalistan tyyppi"]
         if giftlist_type not in list_types:
             abort(403)
-        classes = [("type", giftlist_type)]
-        giftlists.update_list(list_id, name, classes)
+        added_classes = [("Lahjalistan tyyppi", giftlist_type)]
+        giftlists.update_list(list_id, name, added_classes)
 
     return redirect("/giftlist/" + str(list_id))
 
@@ -269,7 +273,7 @@ def hide_list():
         del session["list_id"]
 
 def check_csrf():
-    if request.form["csrf_token"] != session["csrf_token"]:
+    if request.form["csrf_token"] != session["csrf_token"] or "csrf_token" not in request.form:
         abort(403)
 
 if __name__ == "__main__":

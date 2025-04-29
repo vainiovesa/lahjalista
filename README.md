@@ -29,4 +29,4 @@ Sovellukseen luodaan testidataa ajamalla
 ```console
 python3 seed.py
 ```
-Etusivun sivutus toimi nopeasti ilman tietokannan indeksiä 10 000:lla käyttäjällä, 1 000 000 lahjalistalla ja 10 000 000 lahjalla. Sivujen vaihtamiseen meni aikaa 0.0 - 0.22 sekuntia.
+Etusivun sivutus toimi nopeasti ilman tietokannan indeksiä 10 000:lla käyttäjällä, 1 000 000 lahjalistalla ja 10 000 000 lahjalla. Sivujen vaihtamiseen meni aikaa 0.0 - 0.22 sekuntia. Suuri tietomäärä kuitenkin hidastaa hakutoimintoa (Nimihaku hakusanalla "1" vie yli kolme sekuntia) ja yksittäiseen listaan pääseminen vie 0.41 sekuntia.

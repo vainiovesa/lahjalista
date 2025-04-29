@@ -1,10 +1,12 @@
 import random
 import sqlite3
+from classes import list_types
 
 db = sqlite3.connect("database.db")
 
 db.execute("DELETE FROM users")
 db.execute("DELETE FROM giftlists")
+db.execute("DELETE FROM list_classes")
 db.execute("DELETE FROM gifts")
 
 user_count = 10000
@@ -19,6 +21,11 @@ for i in range(1, list_count + 1):
     user_id = random.randint(1, user_count)
     db.execute("INSERT INTO giftlists (title, user_id) VALUES (?, ?)",
                ["list" + str(i), user_id])
+
+for i in range(1, list_count + 1):
+    list_type = random.choice(list_types)
+    db.execute("INSERT INTO list_classes (list_id, title, value) VALUES (?, ?, ?)",
+               [i, "Lahjalistan tyyppi", list_type])
 
 for i in range(1, gift_count + 1):
     user_id = random.randint(1, user_count)

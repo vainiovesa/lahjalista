@@ -7,9 +7,15 @@ def add_list(name, classes:list, user_id, password_hash):
     for title, value in classes:
         db.execute(sql_classes, [list_id, title, value])
 
-def get_lists():
-    sql = "SELECT G.id id, G.title title, U.username username FROM giftlists G, users U WHERE G.user_id = U.id ORDER BY id DESC"
-    return db.query(sql)
+def get_lists(page_size, page):
+    sql = """SELECT   G.id id, G.title title, U.username username 
+             FROM     giftlists G, users U
+             WHERE    G.user_id = U.id
+             ORDER BY id DESC
+             LIMIT ? OFFSET ?"""
+    limit = page_size
+    offset = page_size * (page - 1)
+    return db.query(sql, [limit, offset])
 
 def get_list(list_id):
     sql = """SELECT G.id giftlist_id,
@@ -70,3 +76,7 @@ def find(name, giftlist_type):
 def get_list_passwordhash(list_id):
     sql = "SELECT password_hash FROM giftlists WHERE id = ?"
     return db.query(sql, [list_id])
+
+def list_count():
+    sql = "SELECT COUNT(id) FROM giftlists"
+    return db.query(sql)[0][0]

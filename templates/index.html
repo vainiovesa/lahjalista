@@ -5,7 +5,7 @@
 {% block content %}
 <div class="head">
   <h2>Etusivu</h2>
-  <hr>
+  <hr />
 </div>
 <div class="giftlists">
   <h2 class="contenthead">Lahjalistoja</h2>
@@ -16,6 +16,16 @@
       henkilöltä <a href="/user/{{ list.username }}">{{ list.username }}</a>
     </div>
     {% endfor %}
+  </div>
+  <div class="browse">
+    <p>
+      <a href="/1">&lt;&lt;</a>&nbsp;
+      <a href="/{{ page - 1 }}">&lt;</a>
+      Sivu {{ page }}/{{ page_count }}
+      <a href="/{{ page + 1 }}">&gt;</a>&nbsp;
+      <a href="/{{ page_count }}">&gt;&gt;</a>&nbsp;
+    </p>
+    <hr />
   </div>
 </div>
 {% endblock %}

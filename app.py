@@ -1,8 +1,10 @@
+import time
+import math
 import sqlite3
 import secrets
 import markupsafe
 from flask import Flask
-from flask import redirect, render_template, abort, flash, request, session
+from flask import redirect, render_template, abort, flash, request, session, g
 from werkzeug.security import generate_password_hash, check_password_hash
 from classes import list_types
 import giftlists
@@ -15,11 +17,22 @@ app = Flask(__name__)
 app.secret_key = config.secret_key
 
 @app.route("/")
-def index():
+@app.route("/<int:page>")
+def index(page=1):
+    page_size = 10
+    list_count = giftlists.list_count()
+    page_count = math.ceil(list_count / page_size)
+    page_count = max(page_count, 1)
+
+    if page < 1:
+        return redirect("/1")
+    if page > page_count:
+        return redirect("/" + str(page_count))
+
     if "user_id" not in session:
         hide_list()
-    lists = giftlists.get_lists()
-    return render_template("index.html", lists=lists)
+    lists = giftlists.get_lists(page_size, page)
+    return render_template("index.html", page=page, page_count=page_count, lists=lists)
 
 @app.route("/giftlist/<int:list_id>", methods=["GET", "POST"])
 def page(list_id):
@@ -276,6 +289,16 @@ def hide_list():
 def check_csrf():
     if request.form["csrf_token"] != session["csrf_token"] or "csrf_token" not in request.form:
         abort(403)
+
+@app.before_request
+def before_request():
+    g.start_time = time.time()
+
+@app.after_request
+def after_request(response):
+    elapsed_time = round(time.time() - g.start_time, 2)
+    print("elapsed time:", elapsed_time, "s")
+    return response
 
 if __name__ == "__main__":
     app.run(debug=True)

@@ -23,3 +23,10 @@ python3 init.py
 ```console
 python3 app.py
 ```
+
+## Suuri tietomäärä
+Sovellukseen luodaan testidataa ajamalla
+```console
+python3 seed.py
+```
+Etusivun sivutus toimi nopeasti ilman tietokannan indeksiä 10 000:lla käyttäjällä, 1 000 000 lahjalistalla ja 10 000 000 lahjalla. Sivujen vaihtamiseen meni aikaa 0.0 - 0.22 sekuntia.

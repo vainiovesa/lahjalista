@@ -18,8 +18,7 @@ CREATE TABLE classes (
 );
 
 CREATE TABLE list_classes (
-    id INTEGER PRIMARY KEY,
-    list_id INTEGER REFERENCES giftlists ON DELETE CASCADE,
+    list_id INTEGER PRIMARY KEY REFERENCES giftlists ON DELETE CASCADE,
     title TEXT,
     value TEXT
 );

@@ -24,14 +24,14 @@
   </form>
   <div class="gifts">
     <div class="list">
-      {% for g in gift %}
+      {% for gift in gifts %}
         <div class="item">
-          {{ g.title | show_lines }} <!-- menee laatikosta yli. korjattava 1/2 -->
+          {{ gift.title | show_lines }} <!-- menee laatikosta yli. korjattava 1/2 -->
           <form action="/giftlist/{{ giftlist.giftlist_id }}" method="post">
             <input type="hidden" name="csrf_token" value="{{ session.csrf_token }}" />
-            <input type="hidden" name="gift_id" value="{{ g.id }}" />
+            <input type="hidden" name="gift_id" value="{{ gift.id }}" />
             <input type="submit" value="Poista" name="delete_gift" />
-            {% if g.getter_id != None %}
+            {% if gift.getter_id != None %}
             Joku on varannut tämän lahjan!
             {% endif %}
           </form>
@@ -47,20 +47,20 @@
     {{ giftlist.type }}.
   </p>
   <h3>Lahjatoiveet:</h3>
-  {% if gift | count == 0 %}
+  {% if gifts | count == 0 %}
     <div class="gifts">
       Lahjatoiveita ei ole vielä lisätty
     </div>
   {% else %}
     <div class="gifts">
       <div class="list">
-        {% for g in gift %} 
+        {% for gift in gifts %} 
         <div class="item">
-          {{ g.title | show_lines}} <!-- menee laatikosta yli. korjattava 2/2 -->
+          {{ gift.title | show_lines}} <!-- menee laatikosta yli. korjattava 2/2 -->
           <form action="/giftlist/{{ giftlist.giftlist_id }}" method="post">
-            {% if g.getter_id == None %}
+            {% if gift.getter_id == None %}
               <input type="hidden" name="csrf_token" value="{{ session.csrf_token }}" />
-              <input type="hidden" name="gift_id" value="{{ g.id }}" />
+              <input type="hidden" name="gift_id" value="{{ gift.id }}" />
               <input type="submit" value="Hanki" name="buy" />
             {% else %}
               <b>Tämä lahja on varattu</b>

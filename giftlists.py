@@ -49,21 +49,17 @@ def find(name, giftlist_type):
     if giftlist_type == "":
         sql = """SELECT G.id,
                         G.title,
-                        U.username,
-                        L.value
+                        U.username
                 FROM    giftlists G,
-                        users U,
-                        list_classes L
+                        users U
                 WHERE   G.title LIKE ? AND
-                        G.user_id = U.id AND
-                        G.id = L.list_id
+                        G.user_id = U.id
                         """
         return db.query(sql, ["%" + name + "%"])
     else:
         sql = """SELECT G.id,
                         G.title,
-                        U.username,
-                        L.value
+                        U.username
                  FROM   giftlists G,
                         users U,
                         list_classes L

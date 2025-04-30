@@ -37,10 +37,13 @@ def index(page=1):
 @app.route("/giftlist/<int:list_id>", methods=["GET", "POST"])
 def page(list_id):
     giftlist = giftlists.get_list(list_id)
-    gift = gifts.get_gifts(list_id)
+    if not giftlist:
+        abort(404)
+
+    giftlist_gifts = gifts.get_gifts(list_id)
 
     if request.method == "GET":
-        return render_template("show_list.html", giftlist=giftlist, gift=gift)
+        return render_template("show_list.html", giftlist=giftlist, gifts=giftlist_gifts)
 
     if request.method == "POST":
         if "show" in request.form:
@@ -51,7 +54,7 @@ def page(list_id):
                 session["list_id"] = list_id
             else:
                 flash("VIRHE: Väärä salasana")
-            return render_template("show_list.html", giftlist=giftlist, gift=gift)
+            return render_template("show_list.html", giftlist=giftlist, gifts=giftlist_gifts)
 
         if "add" in request.form:
             require_login()

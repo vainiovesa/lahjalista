@@ -88,7 +88,17 @@ def page(list_id):
             if list_of_gift != list_id:
                 abort(403)
             getter_id = session["user_id"]
-            gifts.buy(list_id, gift_id, getter_id)
+            gifts.buy(gift_id, getter_id)
+            return redirect("/giftlist/" + str(list_id))
+        
+        if "cancel-buy" in request.form:
+            require_login()
+            check_csrf()
+            gift_id = request.form["gift_id"]
+            list_of_gift = gifts.get_list_id_of_gift(gift_id)
+            if list_of_gift != list_id:
+                abort(403)
+            gifts.cancel_buy(gift_id)
             return redirect("/giftlist/" + str(list_id))
 
 @app.route("/find_giftlist")

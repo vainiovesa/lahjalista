@@ -66,6 +66,11 @@
               <input type="hidden" name="csrf_token" value="{{ session.csrf_token }}" />
               <input type="hidden" name="gift_id" value="{{ gift.id }}" />
               <input type="submit" value="Hanki" name="buy" />
+            {% elif gift.getter_id == session.user_id %}
+              <b>Olet varannut tämän lahjan</b>
+              <input type="hidden" name="csrf_token" value="{{ session.csrf_token }}" />
+              <input type="hidden" name="gift_id" value="{{ gift.id }}" />
+              <input type="submit" value="Ei sittenkään" name="cancel-buy" />
             {% else %}
               <b>Tämä lahja on varattu</b>
             {% endif %}

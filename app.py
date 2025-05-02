@@ -72,7 +72,10 @@ def page(list_id):
             list_of_gift = gifts.get_list_id_of_gift(gift_id)
             if list_of_gift != list_id:
                 abort(403)
-            gifts.delete_gift(list_id, gift_id)
+            if gifts.reserved(gift_id):
+                flash("Lahja on jo varattu!")
+            else:
+                gifts.delete_gift(list_id, gift_id)
             return redirect("/giftlist/" + str(list_id))
         
         if "buy" in request.form:
@@ -216,11 +219,11 @@ def create():
     password_hash = generate_password_hash(password1)
     try:
         users.add(username, password_hash)
+        flash("Kirjaudu vielä sisään")
+        return redirect("/login")
     except sqlite3.IntegrityError:
         flash("Tunnus on jo varattu")
         return redirect("/register")
-    
-    return redirect("/")
 
 @app.route("/login", methods=["GET", "POST"])
 def login():

@@ -6,14 +6,11 @@
 <h2 class="contenthead">{{ giftlist.title }}</h2>
 {% if session.user_id == giftlist.user_id %}
 <div class="giftlist">
-  <p>
+  <div class="info">
     <a href="/user/{{ giftlist.username }}"> Sinun</a> lahjatoivelistasi.<br/>
     {{ giftlist.type }}.
-  </p>
-  <p>
-    <a href="/edit/{{ giftlist.giftlist_id }}">Muokkaa</a> <br />
-    <a href="/delete/{{ giftlist.giftlist_id }}">Poista</a>
-  </p>
+    <hr />
+  </div>
   <form action="/giftlist/{{ giftlist.giftlist_id }}" method="post">
     <p>
       <label for="giftname">Lisää lahja</label>:</br>
@@ -25,27 +22,34 @@
   <div class="gifts">
     <div class="list">
       {% for gift in gifts %}
-        <div class="item">
-          {{ gift.title | show_lines }} <!-- menee laatikosta yli. korjattava 1/2 -->
-          <form action="/giftlist/{{ giftlist.giftlist_id }}" method="post">
-            <input type="hidden" name="csrf_token" value="{{ session.csrf_token }}" />
-            <input type="hidden" name="gift_id" value="{{ gift.id }}" />
-            <input type="submit" value="Poista" name="delete_gift" />
-            {% if gift.getter_id != None %}
-            Joku on varannut tämän lahjan!
-            {% endif %}
-          </form>
-        </div>
+      <div class="item">
+        {{ gift.title | show_lines }} <!-- menee laatikosta yli. korjattava 1/2 -->
+        <form action="/giftlist/{{ giftlist.giftlist_id }}" method="post">
+          <input type="hidden" name="csrf_token" value="{{ session.csrf_token }}" />
+          <input type="hidden" name="gift_id" value="{{ gift.id }}" />
+          <input type="submit" value="Poista" name="delete_gift" />
+          {% if gift.getter_id != None %}
+          Joku on varannut tämän lahjan!
+          {% endif %}
+        </form>
+      </div>
       {% endfor %}
     </div>
+  </div>
+  <div class="manage">
+    <hr />
+    <h3>Lahjalistan hallinta</h3>
+    <a href="/edit/{{ giftlist.giftlist_id }}">Muokkaa</a> <br />
+    <a href="/delete/{{ giftlist.giftlist_id }}">Poista</a>
   </div>
 </div>
 {% elif session.list_id == giftlist.giftlist_id %}
 <div class="giftlist">
-  <p>
+  <div class="info">
     Henkilön <a href="/user/{{ giftlist.username }}"> {{ giftlist.username }} </a> lahjatoivelista.<br/>
     {{ giftlist.type }}.
-  </p>
+    <hr />
+  </div>
   <h3>Lahjatoiveet:</h3>
   {% if gifts | count == 0 %}
     <div class="gifts">
@@ -74,10 +78,11 @@
 </div>
 {% else %}
 <div class="giftlist">
-  <p>
+  <div class="info">
     Henkilön <a href="/user/{{ giftlist.username }}"> {{ giftlist.username }} </a> lahjatoivelista.<br/>
     {{ giftlist.type }}.
-  </p>
+    <hr />
+  </div>
 </div>
 <div class="user-auth">
   <form action="/giftlist/{{ giftlist.giftlist_id }}" method="post">

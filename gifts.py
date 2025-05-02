@@ -31,3 +31,7 @@ def users_buyings(username):
              FROM   gifts G
              WHERE  getter_id = (SELECT id FROM users WHERE username = ?)"""
     return db.query(sql, [username])
+
+def reserved(gift_id):
+    sql = "SELECT getter_id FROM gifts WHERE id = ?"
+    return db.query(sql, [gift_id])[0][0]

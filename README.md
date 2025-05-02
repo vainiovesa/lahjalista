@@ -8,7 +8,7 @@ Sovellus, jolla voit ilmaista vieraillesi, mitä lahjoja toivot juhlissasi.
 - [x] Käyttäjä pystyy etsimään lahjalistoja hakusanalla. Käyttäjä pystyy hakemaan sekä itse lisäämiään että muiden käyttäjien lisäämiä listoja.
 - [x] Käyttäjä pystyy valitsemaan lahjalistalle yhden tai useamman luokittelun (esim. onko kyseessä syntymäpäivä- tai hääjuhla). Mahdolliset luokat ovat tietokannassa.
 - [x] Sovelluksessa on pääasiallisen lahjalistan lisäksi toissijainen lista, joka ilmaisee, onko toinen käyttäjä ostamassa lahjaa. Käyttäjä pystyy siis ilmoittamaan ostavansa listalla toivotun lahjan.
-- [x] Sovelluksessa on käyttäjäsivut, jotka näyttävät tilastoja ja käyttäjän lisäämät lahjalistat. Kirjautuneelle käyttäjälle näytetään lahjat, jotka käyttäjä on ilmoittanut ostavansa.
+- [x] Sovelluksessa on käyttäjäsivut, jotka näyttävät käyttäjän lisäämät lahjalistat ja niiden määrän. Kirjautuneelle käyttäjälle näytetään lisäksi lahjat, jotka käyttäjä on ilmoittanut ostavansa.
 
 ### Sovelluksen alustus
 **Tietokantatiedoston luonti**

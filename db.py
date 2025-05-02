@@ -8,10 +8,10 @@ def get_connection():
 
 def execute(sql, params=[]):
     con = get_connection()
-    id = con.execute(sql, params).lastrowid
+    lr_id = con.execute(sql, params).lastrowid
     con.commit()
     con.close()
-    return id
+    return lr_id
 
 def query(sql, params=[]):
     con = get_connection()

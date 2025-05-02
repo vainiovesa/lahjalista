@@ -35,7 +35,7 @@ def index(page=1):
     return render_template("index.html", page=page, page_count=page_count, lists=lists)
 
 @app.route("/giftlist/<int:list_id>", methods=["GET", "POST"])
-def page(list_id):
+def listpage(list_id):
     giftlist = giftlists.get_list(list_id)
     if not giftlist:
         abort(404)
@@ -48,8 +48,7 @@ def page(list_id):
     if request.method == "POST":
         if "show" in request.form:
             password = request.form["password"]
-            result = giftlists.get_list_passwordhash(list_id)
-            password_hash = result[0]["password_hash"]
+            password_hash = giftlists.get_list_passwordhash(list_id)
             if check_password_hash(password_hash, password):
                 session["list_id"] = list_id
             else:
@@ -112,7 +111,8 @@ def find_giftlist():
     if not name:
         name = ""
     all_classes = classes.get_classes()
-    return render_template("find.html", classes=all_classes, name=name, type=giftlist_type, results=results)
+    return render_template("find.html", classes=all_classes, name=name,
+                           type=giftlist_type, results=results)
 
 @app.route("/new_giftlist")
 def new_giftlist():
@@ -177,11 +177,13 @@ def update_giftlist():
         if len(name) > 70 or len(name) < 4:
             flash("VIRHE: Lahjalistan nimen tulee olla 4 - 70 merkkiä pitkä")
             filled = {"name": name}
-            return render_template("edit.html", classes=all_classes, giftlist=giftlist, filled=filled)
+            return render_template("edit.html", classes=all_classes,
+                                   giftlist=giftlist, filled=filled)
         if "Lahjalistan tyyppi" not in request.form:
             flash("VIRHE: Valitse lahjalistan tyyppi")
             filled = {"name": name}
-            return render_template("edit.html", classes=all_classes, giftlist=giftlist, filled=filled)
+            return render_template("edit.html", classes=all_classes,
+                                   giftlist=giftlist, filled=filled)
         giftlist_type = request.form["Lahjalistan tyyppi"]
         if giftlist_type not in list_types:
             abort(403)

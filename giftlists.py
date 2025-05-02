@@ -56,22 +56,22 @@ def find(name, giftlist_type):
                         G.user_id = U.id
                         """
         return db.query(sql, ["%" + name + "%"])
-    else:
-        sql = """SELECT G.id,
-                        G.title,
-                        U.username
-                 FROM   giftlists G,
-                        users U,
-                        list_classes L
-                 WHERE  (G.title LIKE ? AND L.title = "Lahjalistan tyyppi" AND L.value = ?) AND
-                        G.user_id = U.id AND
-                        G.id = L.list_id
-                        """
-        return db.query(sql, ["%" + name + "%", giftlist_type])
+
+    sql = """SELECT G.id,
+                    G.title,
+                    U.username
+                FROM   giftlists G,
+                    users U,
+                    list_classes L
+                WHERE  (G.title LIKE ? AND L.title = "Lahjalistan tyyppi" AND L.value = ?) AND
+                    G.user_id = U.id AND
+                    G.id = L.list_id
+                    """
+    return db.query(sql, ["%" + name + "%", giftlist_type])
 
 def get_list_passwordhash(list_id):
     sql = "SELECT password_hash FROM giftlists WHERE id = ?"
-    return db.query(sql, [list_id])
+    return db.query(sql, [list_id])[0][0]
 
 def list_count():
     sql = "SELECT COUNT(id) FROM giftlists"

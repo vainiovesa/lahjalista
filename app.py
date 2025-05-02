@@ -69,7 +69,7 @@ def page(list_id):
             require_login()
             check_csrf()
             gift_id = request.form["gift_id"]
-            list_of_gift = gifts.get_list_id_of_gift(gift_id)
+            list_of_gift = gifts.get_list_id(gift_id)
             if list_of_gift != list_id:
                 abort(403)
             if gifts.reserved(gift_id):
@@ -77,26 +77,27 @@ def page(list_id):
             else:
                 gifts.delete_gift(list_id, gift_id)
             return redirect("/giftlist/" + str(list_id))
-        
+
         if "buy" in request.form:
             if not user_is_logged_in():
                 flash("Vain rekisteröityneet käyttäjät voivat ilmoittaa ostavansa lahjoja")
                 return redirect("/register")
             check_csrf()
             gift_id = request.form["gift_id"]
-            list_of_gift = gifts.get_list_id_of_gift(gift_id)
-            if list_of_gift != list_id:
+            list_of_gift = gifts.get_list_id(gift_id)
+            gift_has_buyer = gifts.get_buyer(gift_id)
+            if list_of_gift != list_id or gift_has_buyer:
                 abort(403)
-            getter_id = session["user_id"]
-            gifts.buy(gift_id, getter_id)
+            buyer_id = session["user_id"]
+            gifts.buy(gift_id, buyer_id)
             return redirect("/giftlist/" + str(list_id))
-        
+
         if "cancel-buy" in request.form:
             require_login()
             check_csrf()
             gift_id = request.form["gift_id"]
-            list_of_gift = gifts.get_list_id_of_gift(gift_id)
-            if list_of_gift != list_id:
+            buyer_of_gift = gifts.get_buyer(gift_id)
+            if buyer_of_gift != session["user_id"]:
                 abort(403)
             gifts.cancel_buy(gift_id)
             return redirect("/giftlist/" + str(list_id))
@@ -149,7 +150,7 @@ def create_giftlist():
         flash("Listan luomisessa tapahtui virhe")
         filled = {"name": name}
         return render_template("new_giftlist.html", filled=filled)
-    
+
     return redirect("/")
 
 @app.route("/edit/<int:list_id>")
@@ -239,7 +240,7 @@ def create():
 def login():
     if request.method == "GET":
         return render_template("login.html", filled={})
-    
+
     if request.method == "POST":
         if "login" in request.form:
             hide_list()

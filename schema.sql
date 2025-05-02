@@ -29,3 +29,6 @@ CREATE TABLE gifts (
     getter_id INTEGER REFERENCES users,
     giftlist_id INTEGER REFERENCES giftlists ON DELETE CASCADE
 );
+
+CREATE INDEX idx_gls_title_uid ON giftlists (title, user_id);
+CREATE INDEX idx_gfs_glsid ON gifts (giftlist_id);

@@ -52,7 +52,7 @@ def listpage(list_id):
             if check_password_hash(password_hash, password):
                 session["list_id"] = list_id
             else:
-                flash("VIRHE: Väärä salasana")
+                flash("Väärä salasana")
             return render_template("show_list.html", giftlist=giftlist, gifts=giftlist_gifts)
 
         if "add" in request.form:
@@ -127,31 +127,28 @@ def create_giftlist():
     name = request.form["name"]
     if len(name) > 70 or len(name) < 4:
         abort(403)
+
     if "Lahjalistan tyyppi" not in request.form:
         abort(403)
     giftlist_type = request.form["Lahjalistan tyyppi"]
     if giftlist_type not in list_types:
         abort(403)
+
     password1 = request.form["password1"]
     password2 = request.form["password2"]
     if len(password1) < 1:
         abort(403)
-    user_id = session["user_id"]
     all_classes = classes.get_classes()
     if password1 != password2:
-        flash("VIRHE: salasanat eivät ole samat")
-        filled = {"name": name}
-        return render_template("new_giftlist.html", classes=all_classes, filled=filled)
-    password_hash = generate_password_hash(password1)
-    added_classes = [("Lahjalistan tyyppi", giftlist_type)]
-    try:
-        giftlists.add_list(name, added_classes, user_id, password_hash)
-    except sqlite3.IntegrityError:
-        flash("Listan luomisessa tapahtui virhe")
+        flash("Salasanat eivät ole samat")
         filled = {"name": name}
         return render_template("new_giftlist.html", classes=all_classes, filled=filled)
 
-    return redirect("/")
+    password_hash = generate_password_hash(password1)
+    added_classes = [("Lahjalistan tyyppi", giftlist_type)]
+    user_id = session["user_id"]
+    list_id = giftlists.add_list(name, added_classes, user_id, password_hash)
+    return redirect("/giftlist/" + str(list_id))
 
 @app.route("/edit_image/<int:gift_id>")
 def edit_image(gift_id):
@@ -224,12 +221,12 @@ def update_giftlist():
         check_csrf()
         name = request.form["name"]
         if len(name) > 70 or len(name) < 4:
-            flash("VIRHE: Lahjalistan nimen tulee olla 4 - 70 merkkiä pitkä")
+            flash("Lahjalistan nimen tulee olla 4 - 70 merkkiä pitkä")
             filled = {"name": name}
             return render_template("edit.html", classes=all_classes,
                                    giftlist=giftlist, filled=filled)
         if "Lahjalistan tyyppi" not in request.form:
-            flash("VIRHE: Valitse lahjalistan tyyppi")
+            flash("Valitse lahjalistan tyyppi")
             filled = {"name": name}
             return render_template("edit.html", classes=all_classes,
                                    giftlist=giftlist, filled=filled)
@@ -275,13 +272,15 @@ def create():
     username = request.form["username"]
     if len(username) < 2 or len(username) > 50:
         abort(403)
+
     password1 = request.form["password1"]
     password2 = request.form["password2"]
     if len(password1) < 1:
         abort(403)
     if password1 != password2:
-        flash("VIRHE: salasanat eivät ole samat")
+        flash("Salasanat eivät ole samat")
         return redirect("/register")
+
     password_hash = generate_password_hash(password1)
     try:
         users.add(username, password_hash)
@@ -303,10 +302,8 @@ def login():
             password = request.form["password"]
             result = users.find(username)
 
-            if len(result) != 0:
-                result = result[0]
-            else:
-                flash("VIRHE: väärä tunnus tai salasana")
+            if not result:
+                flash("Väärä tunnus tai salasana")
                 filled = {"username": username}
                 return render_template("login.html", filled=filled)
 
@@ -319,7 +316,7 @@ def login():
                 session["csrf_token"] = secrets.token_hex(16)
                 return redirect("/")
             else:
-                flash("VIRHE: väärä tunnus tai salasana")
+                flash("Väärä tunnus tai salasana")
                 filled = {"username": username}
                 return render_template("login.html", filled=filled)
 
@@ -334,18 +331,13 @@ def logout():
 @app.route("/user/<username>")
 def show_user(username):
     user = users.get_user(username)
-    buyings = gifts.users_buyings(username)
     if not user:
         abort(404)
+
+    buyings = gifts.users_buyings(username)
     user_id = user["id"]
     lists = users.get_lists(user_id)
     return render_template("user.html", user=user, lists=lists, buyings=buyings)
-
-@app.template_filter()
-def show_lines(content):
-    content = str(markupsafe.escape(content))
-    content = content.replace("\n", "<br />")
-    return markupsafe.Markup(content)
 
 @app.route("/image/<int:gift_id>")
 def show_image(gift_id):
@@ -355,6 +347,12 @@ def show_image(gift_id):
     response = make_response(bytes(image))
     response.headers.set("Content-Type", "image/jpeg")
     return response
+
+@app.template_filter()
+def show_lines(content):
+    content = str(markupsafe.escape(content))
+    content = content.replace("\n", "<br />")
+    return markupsafe.Markup(content)
 
 def require_login():
     if "user_id" not in session:

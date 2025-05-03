@@ -6,7 +6,8 @@ def add(username, password_hash):
 
 def find(username):
     sql = "SELECT id, password_hash FROM users WHERE username = ?"
-    return db.query(sql, [username])
+    result = db.query(sql, [username])
+    return result[0] if result else None
 
 def get_user(username):
     sql = "SELECT id, username FROM users WHERE username = ?"

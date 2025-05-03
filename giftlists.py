@@ -6,6 +6,7 @@ def add_list(name, classes:list, user_id, password_hash):
     list_id = db.execute(sql_giftlist, [name, user_id, password_hash])
     for title, value in classes:
         db.execute(sql_classes, [list_id, title, value])
+    return list_id
 
 def get_lists(page_size, page):
     sql = """SELECT   G.id id, G.title title, U.username username 

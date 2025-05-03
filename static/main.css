@@ -60,6 +60,10 @@ nav li:not(:last-of-type) {
     border-radius: 10px;
 }
 
+#image {
+    max-height: 100px;
+}
+
 .item input {
     background-color: antiquewhite;
 }

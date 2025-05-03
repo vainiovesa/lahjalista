@@ -24,12 +24,18 @@
       {% for gift in gifts %}
       <div class="item">
         {{ gift.title | show_lines }} <!-- menee laatikosta yli. korjattava 1/2 -->
+        <br />
+        {% if gift.has_image %}
+        <img id="image" src="/image/{{ gift.id }}" alt="Image of {{ gift.title }}" /><br />
+        {% endif %}
+        Miltä tämän lahjan kuuluisi näyttää? <br />
+        <a href="/edit_image/{{ gift.id }}">Lisää tai muokkaa kuvaa</a>
         <form action="/giftlist/{{ giftlist.giftlist_id }}" method="post">
           <input type="hidden" name="csrf_token" value="{{ session.csrf_token }}" />
           <input type="hidden" name="gift_id" value="{{ gift.id }}" />
           <input type="submit" value="Poista" name="delete_gift" />
           {% if gift.getter_id != None %}
-          Joku on varannut tämän lahjan!
+            <b>Joku on varannut tämän lahjan!</b>
           {% endif %}
         </form>
       </div>
@@ -61,6 +67,10 @@
         {% for gift in gifts %} 
         <div class="item">
           {{ gift.title | show_lines}} <!-- menee laatikosta yli. korjattava 2/2 -->
+          <br />
+          {% if gift.has_image %}
+          <img id="image" src="/image/{{ gift.id }}" alt="Image of {{ gift.title }}" /><br />
+          {% endif %}
           <form action="/giftlist/{{ giftlist.giftlist_id }}" method="post">
             {% if gift.getter_id == None %}
               <input type="hidden" name="csrf_token" value="{{ session.csrf_token }}" />

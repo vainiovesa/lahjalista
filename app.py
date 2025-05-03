@@ -4,7 +4,7 @@ import sqlite3
 import secrets
 import markupsafe
 from flask import Flask
-from flask import redirect, render_template, abort, flash, request, session, g
+from flask import redirect, render_template, abort, flash, make_response, request, session, g
 from werkzeug.security import generate_password_hash, check_password_hash
 from classes import list_types
 import giftlists
@@ -163,6 +163,44 @@ def edit(list_id):
     all_classes = classes.get_classes()
     return render_template("edit.html", classes=all_classes, giftlist=giftlist, filled={})
 
+@app.route("/edit_image/<int:gift_id>")
+def edit_image(gift_id):
+    require_login()
+    gift = gifts.get_gift(gift_id)
+    if not gift:
+        abort(404)
+    gift = gift[0]
+    if gift["user_id"] != session["user_id"]:
+        abort(403)
+    return render_template("edit_image.html", gift=gift)
+
+@app.route("/add_image", methods=["POST"])
+def add_image():
+    require_login()
+    check_csrf()
+
+    gift_id = request.form["gift_id"]
+    giftlist_id = request.form["giftlist_id"]
+
+    file = request.files["image"]
+
+    if not file:
+        flash("Ei kuvaa valittu")
+        return redirect("/edit_image/" + str(gift_id))
+
+    if not file.filename.endswith(".jpg"):
+        flash("Väärä tiedostomuoto")
+        return redirect("/edit_image/" + str(gift_id))
+
+    image = file.read()
+    if len(image) > 100 * 1024:
+        flash("Liian suuri kuva")
+        return redirect("/edit_image/" + str(gift_id))
+
+    gifts.update_image(gift_id, image)
+    flash("Kuvan lisääminen onnistui")
+    return redirect("/giftlist/" + str(giftlist_id))
+
 @app.route("/update_giftlist", methods=["POST"])
 def update_giftlist():
     list_id = request.form["list_id"]
@@ -292,6 +330,15 @@ def show_lines(content):
     content = str(markupsafe.escape(content))
     content = content.replace("\n", "<br />")
     return markupsafe.Markup(content)
+
+@app.route("/image/<int:gift_id>")
+def show_image(gift_id):
+    image = gifts.get_image(gift_id)
+    if not image:
+        abort(404)
+    response = make_response(bytes(image))
+    response.headers.set("Content-Type", "image/jpeg")
+    return response
 
 def require_login():
     if "user_id" not in session:

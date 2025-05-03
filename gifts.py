@@ -7,7 +7,8 @@ def add_gift(title, giftlist_id):
 def get_gifts(giftlist_id):
     sql = """SELECT G.id,
                     G.title,
-                    G.getter_id
+                    G.getter_id,
+                    G.image IS NOT NULL has_image
              FROM   gifts G,
                     giftlists GL
              WHERE  GL.id = ? AND
@@ -43,3 +44,22 @@ def users_buyings(username):
 def reserved(gift_id):
     sql = "SELECT getter_id FROM gifts WHERE id = ?"
     return db.query(sql, [gift_id])[0][0]
+
+def get_gift(gift_id):
+    sql = """SELECT G.id id,
+                    G.title title,
+                    G.giftlist_id giftlist_id,
+                    GL.user_id user_id
+             FROM   gifts G, giftlists GL 
+             WHERE  G.id = ? AND
+                    G.giftlist_id = GL.id"""
+    return db.query(sql, [gift_id])
+
+def update_image(gift_id, image):
+    sql = "UPDATE gifts SET image = ? WHERE id = ?"
+    db.execute(sql, [image, gift_id])
+
+def get_image(gift_id):
+    sql = "SELECT image FROM gifts WHERE id = ?"
+    result = db.query(sql, [gift_id])
+    return result[0][0] if result else None

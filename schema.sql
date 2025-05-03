@@ -27,7 +27,8 @@ CREATE TABLE gifts (
     id INTEGER PRIMARY KEY,
     title TEXT,
     getter_id INTEGER REFERENCES users,
-    giftlist_id INTEGER REFERENCES giftlists ON DELETE CASCADE
+    giftlist_id INTEGER REFERENCES giftlists ON DELETE CASCADE,
+    image BLOB
 );
 
 CREATE INDEX idx_gls_title_uid ON giftlists (title, user_id);

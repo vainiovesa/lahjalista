@@ -59,7 +59,7 @@ def listpage(list_id):
             require_login()
             check_csrf()
             title = request.form["giftname"]
-            if len(title) > 90 or len(title) < 3:
+            if len(title) > 90 or len(title) < 3 or giftlist["user_id"] != session["user_id"]:
                 abort(403)
             gifts.add_gift(title, list_id)
             return redirect("/giftlist/" + str(list_id))
@@ -68,8 +68,7 @@ def listpage(list_id):
             require_login()
             check_csrf()
             gift_id = request.form["gift_id"]
-            list_of_gift = gifts.get_list_id(gift_id)
-            if list_of_gift != list_id:
+            if giftlist["user_id"] != session["user_id"]:
                 abort(403)
             if gifts.reserved(gift_id):
                 flash("Lahja on jo varattu!")

@@ -50,9 +50,9 @@ def find(name, giftlist_type):
         sql = """SELECT G.id,
                         G.title,
                         U.username
-                FROM    giftlists G,
+                 FROM   giftlists G,
                         users U
-                WHERE   G.title LIKE ? AND
+                 WHERE  G.title LIKE ? AND
                         G.user_id = U.id
                         """
         return db.query(sql, ["%" + name + "%"])
@@ -60,10 +60,10 @@ def find(name, giftlist_type):
     sql = """SELECT G.id,
                     G.title,
                     U.username
-                FROM   giftlists G,
+             FROM   giftlists G,
                     users U,
                     list_classes L
-                WHERE  (G.title LIKE ? AND L.title = "Lahjalistan tyyppi" AND L.value = ?) AND
+             WHERE  (G.title LIKE ? AND L.title = "Lahjalistan tyyppi" AND L.value = ?) AND
                     G.user_id = U.id AND
                     G.id = L.list_id
                     """

@@ -137,10 +137,11 @@ def create_giftlist():
     if len(password1) < 1:
         abort(403)
     user_id = session["user_id"]
+    all_classes = classes.get_classes()
     if password1 != password2:
         flash("VIRHE: salasanat eivät ole samat")
         filled = {"name": name}
-        return render_template("new_giftlist.html", filled=filled)
+        return render_template("new_giftlist.html", classes=all_classes, filled=filled)
     password_hash = generate_password_hash(password1)
     added_classes = [("Lahjalistan tyyppi", giftlist_type)]
     try:
@@ -148,20 +149,9 @@ def create_giftlist():
     except sqlite3.IntegrityError:
         flash("Listan luomisessa tapahtui virhe")
         filled = {"name": name}
-        return render_template("new_giftlist.html", filled=filled)
+        return render_template("new_giftlist.html", classes=all_classes, filled=filled)
 
     return redirect("/")
-
-@app.route("/edit/<int:list_id>")
-def edit(list_id):
-    require_login()
-    giftlist = giftlists.get_list(list_id)
-    if not giftlist:
-        abort(404)
-    if giftlist["user_id"] != session["user_id"]:
-        abort(403)
-    all_classes = classes.get_classes()
-    return render_template("edit.html", classes=all_classes, giftlist=giftlist, filled={})
 
 @app.route("/edit_image/<int:gift_id>")
 def edit_image(gift_id):
@@ -210,10 +200,23 @@ def add_image():
         flash("Kuva poistettu")
         return redirect("/edit_image/" + str(gift_id))
 
+@app.route("/edit/<int:list_id>")
+def edit(list_id):
+    require_login()
+    giftlist = giftlists.get_list(list_id)
+    if not giftlist:
+        abort(404)
+    if giftlist["user_id"] != session["user_id"]:
+        abort(403)
+    all_classes = classes.get_classes()
+    return render_template("edit.html", classes=all_classes, giftlist=giftlist, filled={})
+
 @app.route("/update_giftlist", methods=["POST"])
 def update_giftlist():
     list_id = request.form["list_id"]
     giftlist = giftlists.get_list(list_id)
+    if not giftlist or giftlist["user_id"] != session["user_id"]:
+        abort(403)
     all_classes = classes.get_classes()
 
     if "save" in request.form:
@@ -250,6 +253,10 @@ def delete(list_id):
 
 @app.route("/delete_giftlist/<int:list_id>", methods=["POST"])
 def delete_giftlist(list_id):
+    user_id = giftlists.get_user(list_id)
+    if not user_id or user_id != session["user_id"]:
+        abort(403)
+
     if "cancel" in request.form:
         return redirect("/giftlist/" + str(list_id))
 
@@ -361,7 +368,7 @@ def hide_list():
         del session["list_id"]
 
 def check_csrf():
-    if request.form["csrf_token"] != session["csrf_token"] or "csrf_token" not in request.form:
+    if "csrf_token" not in request.form or request.form["csrf_token"] != session["csrf_token"]:
         abort(403)
 
 @app.before_request

@@ -76,3 +76,8 @@ def get_list_passwordhash(list_id):
 def list_count():
     sql = "SELECT COUNT(id) FROM giftlists"
     return db.query(sql)[0][0]
+
+def get_user(list_id):
+    sql = "SELECT user_id FROM giftlists WHERE id = ?"
+    result = db.query(sql, [list_id])
+    return result[0][0] if result else None

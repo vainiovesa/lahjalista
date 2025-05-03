@@ -24,9 +24,6 @@
   <input type="hidden" name="list_id" value="{{ giftlist.giftlist_id }}" />
   <input type="hidden" name="csrf_token" value="{{ session.csrf_token }}" />
   <input type="submit" value="Tallenna muutokset" name="save" />
-</form>
-<form action="/update_giftlist" method="post">
-  <input type="hidden" name="list_id" value="{{ giftlist.giftlist_id }}" />
   <input type="submit" value="Ei sittenkään" name="cancel" />
 </form>
 {% for message in get_flashed_messages() %}

@@ -23,21 +23,30 @@
     <div class="list">
       {% for gift in gifts %}
       <div class="item">
-        {{ gift.title | show_lines }}
-        <br />
-        {% if gift.has_image %}
-        <img id="image" src="/image/{{ gift.id }}" alt="Image of {{ gift.title }}" /><br />
-        {% endif %}
-        Miltä tämän lahjan kuuluisi näyttää? <br />
-        <a href="/edit_image/{{ gift.id }}">Lisää tai muokkaa kuvaa</a>
-        <form action="/giftlist/{{ giftlist.giftlist_id }}" method="post">
-          <input type="hidden" name="csrf_token" value="{{ session.csrf_token }}" />
-          <input type="hidden" name="gift_id" value="{{ gift.id }}" />
-          <input type="submit" value="Poista" name="delete_gift" />
-          {% if gift.getter_id != None %}
-            <b>Joku on varannut tämän lahjan!</b>
-          {% endif %}
-        </form>
+        <div class="gift">
+          <div class="gift-title">
+            {{ gift.title | show_lines }}<br />
+          </div>
+          <div class="gift-image">
+            {% if gift.has_image %}
+              <img id="image" src="/image/{{ gift.id }}" alt="Image of {{ gift.title }}" /><br />
+              <a href="/edit_image/{{ gift.id }}">Muokkaa kuvaa</a>
+            {% else %}
+              Miltä tämän lahjan kuuluisi näyttää? <br />
+              <a href="/edit_image/{{ gift.id }}">Lisää kuva</a>
+            {% endif %}
+          </div>
+        </div>
+        <div class="gift-remove">
+          <form action="/giftlist/{{ giftlist.giftlist_id }}" method="post">
+            <input type="hidden" name="csrf_token" value="{{ session.csrf_token }}" />
+            <input type="hidden" name="gift_id" value="{{ gift.id }}" />
+            <input type="submit" value="Poista" name="delete_gift" />
+            {% if gift.getter_id != None %}
+              <b>Joku on varannut tämän lahjan!</b>
+            {% endif %}
+          </form>
+        </div>
       </div>
       {% endfor %}
     </div>
@@ -66,24 +75,32 @@
       <div class="list">
         {% for gift in gifts %} 
         <div class="item">
-          {{ gift.title | show_lines}}
-          <br />
-          {% if gift.has_image %}
-          <img id="image" src="/image/{{ gift.id }}" alt="Image of {{ gift.title }}" /><br />
-          {% endif %}
-          <form action="/giftlist/{{ giftlist.giftlist_id }}" method="post">
-            {% if gift.getter_id == None %}
-              <input type="hidden" name="csrf_token" value="{{ session.csrf_token }}" />
-              <input type="hidden" name="gift_id" value="{{ gift.id }}" />
-              <input type="submit" value="Hanki" name="buy" />
-            {% elif gift.getter_id == session.user_id %}
-              <b>Olet varannut tämän lahjan</b>
-              <input type="hidden" name="csrf_token" value="{{ session.csrf_token }}" />
-              <input type="hidden" name="gift_id" value="{{ gift.id }}" />
-              <input type="submit" value="Ei sittenkään" name="cancel-buy" />
-            {% else %}
-              <b>Tämä lahja on varattu</b>
-            {% endif %}
+          
+          <div class="gift">
+            <div class="gift-title">
+              {{ gift.title | show_lines }}<br />
+            </div>
+            <div class="gift-image">
+              {% if gift.has_image %}
+                <img id="image" src="/image/{{ gift.id }}" alt="Image of {{ gift.title }}" /><br />
+              {% endif %}
+            </div>
+          </div>
+          <div class="gift-buy">
+            <form action="/giftlist/{{ giftlist.giftlist_id }}" method="post">
+              {% if gift.getter_id == None %}
+                <input type="hidden" name="csrf_token" value="{{ session.csrf_token }}" />
+                <input type="hidden" name="gift_id" value="{{ gift.id }}" />
+                <input type="submit" value="Hanki" name="buy" />
+              {% elif gift.getter_id == session.user_id %}
+                <b>Olet varannut tämän lahjan</b>
+                <input type="hidden" name="csrf_token" value="{{ session.csrf_token }}" />
+                <input type="hidden" name="gift_id" value="{{ gift.id }}" />
+                <input type="submit" value="Ei sittenkään" name="cancel-buy" />
+              {% else %}
+                <b>Tämä lahja on varattu</b>
+              {% endif %}
+          </div>
           </form>
         </div>
         {% endfor %}

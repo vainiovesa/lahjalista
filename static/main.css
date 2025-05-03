@@ -58,11 +58,22 @@ nav li:not(:last-of-type) {
     padding: 0.2em 0.5em;
     background-color: #EDF7F6;
     border-radius: 10px;
-    overflow: scroll;
+}
+
+.gift {
+    word-wrap: anywhere;
+    display: flex;
+    justify-content: space-between;
+}
+
+.gift-image {
+    max-width: 120px;
 }
 
 #image {
-    max-height: 100px;
+    max-width: 100px;
+    margin: 10px;
+    margin-bottom: 0;
 }
 
 .item input {

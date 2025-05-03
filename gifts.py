@@ -53,7 +53,8 @@ def get_gift(gift_id):
              FROM   gifts G, giftlists GL 
              WHERE  G.id = ? AND
                     G.giftlist_id = GL.id"""
-    return db.query(sql, [gift_id])
+    result = db.query(sql, [gift_id])
+    return result[0] if result else None
 
 def update_image(gift_id, image):
     sql = "UPDATE gifts SET image = ? WHERE id = ?"

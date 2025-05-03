@@ -169,7 +169,6 @@ def edit_image(gift_id):
     gift = gifts.get_gift(gift_id)
     if not gift:
         abort(404)
-    gift = gift[0]
     if gift["user_id"] != session["user_id"]:
         abort(403)
     return render_template("edit_image.html", gift=gift)
@@ -181,6 +180,10 @@ def add_image():
 
     gift_id = request.form["gift_id"]
     giftlist_id = request.form["giftlist_id"]
+
+    gift = gifts.get_gift(gift_id)
+    if not gift or gift["user_id"] != session["user_id"]:
+        abort(403)
 
     if "send" in request.form:
         file = request.files["image"]
@@ -201,7 +204,7 @@ def add_image():
         gifts.update_image(gift_id, image)
         flash("Kuvan lisääminen onnistui")
         return redirect("/giftlist/" + str(giftlist_id))
-    
+
     if "remove" in request.form:
         gifts.remove_image(gift_id)
         flash("Kuva poistettu")

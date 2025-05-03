@@ -3,58 +3,62 @@
 {% block title %}{{ user.username }}{% endblock %}
 
 {% block content %}
-<h2>Käyttäjä {{ user.username }}</h2>
+<h2 class="contenthead">Käyttäjä {{ user.username }}</h2>
 {% if session.username == user.username %}
-{% if lists | count == 0 %}
-<p>
-  Sinulla ei ole lahjalistoja.
-</p>
-{% elif lists | count == 1 %}
-<p>
-  Sinulla on yksi lista:
-</p>
+<div class="user">
+  <div class="user-lists">
+    {% if lists | count == 0 %}
+      <b>Sinulla ei ole lahjalistoja.</b>
+    {% else %}
+      {% if lists | count == 1 %}
+        <b>Sinulla on yksi lista:</b>
+      {% else %}
+        <b>Sinulla on {{ lists | count }} listaa:</b>
+      {% endif %}
+      <ul>
+        {% for list in lists %}
+          <li>
+            <a href="/giftlist/{{ list.id }}">{{ list.title }}</a>
+          </li>
+        {% endfor %}
+      </ul>
+    {% endif %}
+  </div>
+  <div class="user-gifts">
+  {% if buyings | count == 0 %}
+    <b>Et ole ilmoittanut ostavasi lahjoja.</b>
+  {% else %}  
+    <b>Olet ilmoittanut ostavasi seuraavia lahjoja:</b>
+    <ul>
+      {% for buying in buyings %}
+      <li>
+        {{ buying.title | show_lines }}
+      </li>
+      {% endfor %}
+    </ul>
+    {% endif %}
+  </div>
+</div>
 {% else %}
-<p>
-  Sinulla on {{ lists | count }} listaa:
-</p>
-{% endif %}
-<ul>
-  {% for list in lists %}
-  <li>
-    <a href="/giftlist/{{ list.id }}">{{ list.title }}</a>
-  </li>
-  {% endfor %}
-</ul>
-<b>
-  Olet ilmoittanut ostavasi seuraavia lahjoja:
-</b>
-<ul>
-  {% for buying in buyings %}
-  <li>
-    {{ buying.title | show_lines }}
-  </li>
-  {% endfor %}
-</ul>
-{% else %}
-{% if lists | count == 0 %}
-<p>
-  Henkilöllä {{ user.username }} ei ole lahjalistoja.
-</p>
-{% elif lists | count == 1 %}
-<p>
-  Henkilöllä {{ user.username }} on yksi lista:
-</p>
-{% else %}
-<p>
-  Henkilöllä {{ user.username }} on {{ lists | count }} listaa:
-</p>
-{% endif %}
-<ul>
-  {% for list in lists %}
-  <li>
-    <a href="/giftlist/{{ list.id }}">{{ list.title }}</a>
-  </li>
-  {% endfor %}
-</ul>
+<div class="user">
+  <div class="user-lists">
+    {% if lists | count == 0 %}
+      <b>Henkilöllä {{ user.username }} ei ole lahjalistoja.</b>
+    {% else %}
+      {% if lists | count == 1 %}
+        <b>Henkilöllä {{ user.username }} on yksi lista:</b>
+      {% else %}
+        <b>Henkilöllä {{ user.username }} on {{ lists | count }} listaa:</b>
+      {% endif %}
+      <ul>
+        {% for list in lists %}
+        <li>
+          <a href="/giftlist/{{ list.id }}">{{ list.title }}</a>
+        </li>
+        {% endfor %}
+      </ul>
+    {% endif %}
+  </div>
+</div>
 {% endif %}
 {% endblock %}

@@ -58,6 +58,7 @@ nav li:not(:last-of-type) {
     padding: 0.2em 0.5em;
     background-color: #EDF7F6;
     border-radius: 10px;
+    overflow: scroll;
 }
 
 #image {

@@ -182,24 +182,30 @@ def add_image():
     gift_id = request.form["gift_id"]
     giftlist_id = request.form["giftlist_id"]
 
-    file = request.files["image"]
+    if "send" in request.form:
+        file = request.files["image"]
 
-    if not file:
-        flash("Ei kuvaa valittu")
+        if not file:
+            flash("Ei kuvaa valittu")
+            return redirect("/edit_image/" + str(gift_id))
+
+        if not file.filename.endswith(".jpg"):
+            flash("Väärä tiedostomuoto")
+            return redirect("/edit_image/" + str(gift_id))
+
+        image = file.read()
+        if len(image) > 100 * 1024:
+            flash("Liian suuri kuva")
+            return redirect("/edit_image/" + str(gift_id))
+
+        gifts.update_image(gift_id, image)
+        flash("Kuvan lisääminen onnistui")
+        return redirect("/giftlist/" + str(giftlist_id))
+    
+    if "remove" in request.form:
+        gifts.remove_image(gift_id)
+        flash("Kuva poistettu")
         return redirect("/edit_image/" + str(gift_id))
-
-    if not file.filename.endswith(".jpg"):
-        flash("Väärä tiedostomuoto")
-        return redirect("/edit_image/" + str(gift_id))
-
-    image = file.read()
-    if len(image) > 100 * 1024:
-        flash("Liian suuri kuva")
-        return redirect("/edit_image/" + str(gift_id))
-
-    gifts.update_image(gift_id, image)
-    flash("Kuvan lisääminen onnistui")
-    return redirect("/giftlist/" + str(giftlist_id))
 
 @app.route("/update_giftlist", methods=["POST"])
 def update_giftlist():

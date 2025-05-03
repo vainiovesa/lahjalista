@@ -63,3 +63,7 @@ def get_image(gift_id):
     sql = "SELECT image FROM gifts WHERE id = ?"
     result = db.query(sql, [gift_id])
     return result[0][0] if result else None
+
+def remove_image(gift_id):
+    sql = "UPDATE gifts SET image = Null WHERE id = ?"
+    db.execute(sql, [gift_id])

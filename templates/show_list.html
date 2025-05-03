@@ -23,7 +23,7 @@
     <div class="list">
       {% for gift in gifts %}
       <div class="item">
-        {{ gift.title | show_lines }} <!-- menee laatikosta yli. korjattava 1/2 -->
+        {{ gift.title | show_lines }}
         <br />
         {% if gift.has_image %}
         <img id="image" src="/image/{{ gift.id }}" alt="Image of {{ gift.title }}" /><br />
@@ -66,7 +66,7 @@
       <div class="list">
         {% for gift in gifts %} 
         <div class="item">
-          {{ gift.title | show_lines}} <!-- menee laatikosta yli. korjattava 2/2 -->
+          {{ gift.title | show_lines}}
           <br />
           {% if gift.has_image %}
           <img id="image" src="/image/{{ gift.id }}" alt="Image of {{ gift.title }}" /><br />

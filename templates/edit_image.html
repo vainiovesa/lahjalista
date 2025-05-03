@@ -12,7 +12,8 @@
         <input type="hidden" name="gift_id" value="{{ gift.id }}" />
         <input type="hidden" name="giftlist_id" value="{{ gift.giftlist_id }}" />
         <input type="hidden" name="csrf_token" value="{{ session.csrf_token }}" />
-        <input type="submit" value="Lähetä" />
+        <input type="submit" name="send" value="Lähetä" />
+        <input type="submit" name="remove" value="Poista" />
     </form>
 </div>
 <hr />
